@@ -8,12 +8,12 @@ import MainTab from './BottomTabNavigation';
 import {MODES, OnBoarding} from '../components/shared';
 import {AppContext} from '../App';
 import {STORAGE_KEYS} from '../constants';
+import {RootStackParamList, ROOT_ROUTES} from './typing';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const Navigation = () => {
   const {showOnBoarding} = React.useContext(AppContext);
-
   const handleGoToMainStack = React.useCallback(async (navigation: any) => {
     await AsyncStorage.setItem(STORAGE_KEYS.userHasVisitedApp, 'True');
     navigation.navigate('Authentication');
@@ -22,9 +22,11 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={showOnBoarding ? 'OnBoarding' : 'Authentication'}
+        initialRouteName={
+          showOnBoarding ? 'OnBoarding' : ROOT_ROUTES.AUTHENTICATION
+        }
         screenOptions={{headerShown: false}}>
-        <Stack.Screen name="OnBoarding">
+        <Stack.Screen name={ROOT_ROUTES.ONBOARDING}>
           {({navigation}) => (
             <OnBoarding
               mode={MODES.primary}
@@ -33,8 +35,11 @@ const Navigation = () => {
           )}
         </Stack.Screen>
         <Stack.Group screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Authentication" component={AuthNavigation} />
-          <Stack.Screen name="Root" component={MainTab} />
+          <Stack.Screen
+            name={ROOT_ROUTES.AUTHENTICATION}
+            component={AuthNavigation}
+          />
+          <Stack.Screen name={ROOT_ROUTES.MAIN_TAB} component={MainTab} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
