@@ -11,6 +11,8 @@ export enum AUTHENTICATION_ROUTES {
   SIGN_UP_FORM = 'SignUpForm',
   LOGIN_FORM = 'LoginForm',
   VERIFY_OTP_FORM = 'VerifyOTPForm',
+  FORGOT_PASSWORD_FORM = 'ForgotPasswordForm',
+  RESET_PASSWORD_FORM = 'ResetPasswordForm',
 }
 
 /** Bottom Tab navigation routes */
@@ -35,6 +37,8 @@ export type AuthStackParamList = {
   SignUpForm: undefined;
   LoginForm: undefined;
   VerifyOTPForm: {origin: 'reset-account' | 'new-account'} | undefined;
+  ForgotPasswordForm: undefined;
+  ResetPasswordForm: undefined;
 };
 
 /** Root route param list  */

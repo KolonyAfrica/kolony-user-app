@@ -11,7 +11,6 @@ import {STORAGE_KEYS} from '../constants';
 import {RootStackParamList, ROOT_ROUTES} from './typing';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
-
 const Navigation = () => {
   const {showOnBoarding} = React.useContext(AppContext);
   const handleGoToMainStack = React.useCallback(async (navigation: any) => {

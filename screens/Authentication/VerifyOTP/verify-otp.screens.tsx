@@ -1,4 +1,4 @@
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
@@ -33,11 +33,14 @@ type NavigationProp = NativeStackScreenProps<
 const VerifyOTPForm = () => {
   const [modalVisible, setModalVisibility] = React.useState<boolean>(false);
   const route = useRoute<NavigationProp['route']>();
+  const navigation = useNavigation<NavigationProp['navigation']>();
 
   const handleOTPVerification = () => {
     const origin = route.params?.origin;
     if (origin === 'new-account') {
       setModalVisibility(true);
+    } else {
+      navigation.navigate(AUTHENTICATION_ROUTES.RESET_PASSWORD_FORM);
     }
   };
 
