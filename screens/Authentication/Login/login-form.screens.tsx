@@ -1,6 +1,6 @@
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
+import {CompositeScreenProps, useNavigation} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTheme} from 'styled-components';
@@ -25,16 +25,18 @@ import Spacing from '../../../components/shared/Spacing';
 import {
   AUTHENTICATION_ROUTES,
   AuthStackParamList,
+  RootStackParamList,
+  ROOT_ROUTES,
 } from '../../../navigation/typing';
 
-type NavigationProp = NativeStackScreenProps<
-  AuthStackParamList,
-  AUTHENTICATION_ROUTES.LOGIN_FORM
+type LoginFormNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<AuthStackParamList, 'LoginForm'>,
+  NativeStackScreenProps<RootStackParamList>
 >;
 
 const Login = () => {
   const theme = useTheme();
-  const navigation = useNavigation<NavigationProp['navigation']>();
+  const navigation = useNavigation<LoginFormNavigationProps['navigation']>();
   const [hidePassword, setHidePassword] = React.useState<boolean>(true);
 
   const togglePasswordVisibility = React.useCallback(
@@ -90,7 +92,12 @@ const Login = () => {
           </TouchableOpacity>
         </HorizontalWrapper>
         <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
-        <Button type={BUTTON_TYPES.primary} text="Login" fill />
+        <Button
+          type={BUTTON_TYPES.primary}
+          text="Login"
+          fill
+          onPress={() => navigation.navigate(ROOT_ROUTES.MAIN_TAB)}
+        />
         <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
         <Button
           type={BUTTON_TYPES.ghost}
