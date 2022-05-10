@@ -43,13 +43,14 @@ export const DeliveryOptionsBox = styled.View`
   background-color: #ffffff;
 `;
 
-export const DeliveryOption = styled.View`
+export const DeliveryOption = styled.View<{reduceMargin?: boolean}>`
   background-color: ${({theme}) => theme.palette.secondary.orange160};
   width: 100%;
   height: 80px;
   border-radius: ${({theme}) => `${theme.borderRadii.lg}px`};
   padding: ${({theme}) => `0px ${theme.padding.medium}px`};
   justify-content: center;
+  margin-bottom: ${({reduceMargin}) => (reduceMargin ? '10px' : '20px')};
 `;
 
 export const DeliveryOptionHeading = styled.Text`

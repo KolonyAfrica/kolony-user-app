@@ -40,6 +40,16 @@ const MainTab = () => {
         tabBarStyle: {
           height: SCREEN_HEIGHT * 0.101,
           paddingTop: theme.padding.small,
+          borderTopWidth: 0,
+          backgroundColor: '#ffffff',
+          shadowColor: '#000000',
+          elevation: 8,
+          shadowOpacity: 0.05,
+          shadowRadius: 24,
+          shadowOffset: {
+            height: 4,
+            width: 4,
+          },
         },
       }}>
       <Tab.Screen
