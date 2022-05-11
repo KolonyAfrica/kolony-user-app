@@ -7,6 +7,7 @@ import {
   FormFooterText,
   generalHorizontalPadding,
   ScreenTitle,
+  Touchable,
 } from '../../components/shared/common/styles';
 
 export const HomeWrapper = styled.View`
@@ -43,7 +44,7 @@ export const DeliveryOptionsBox = styled.View`
   background-color: #ffffff;
 `;
 
-export const DeliveryOption = styled.View<{reduceMargin?: boolean}>`
+export const DeliveryOption = styled(Touchable)<{reduceMargin?: boolean}>`
   background-color: ${({theme}) => theme.palette.secondary.orange160};
   width: 100%;
   height: 80px;

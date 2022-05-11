@@ -3,6 +3,8 @@ import {FlatList, StatusBar} from 'react-native';
 import {useTheme} from 'styled-components';
 import {
   BaseTextInput,
+  BottomModal,
+  BOTTOM_MODAL_SIZE,
   Button,
   BUTTON_SIZE,
   BUTTON_TYPES,
@@ -18,6 +20,7 @@ import {
   VerticalWrapper,
 } from '../../components/shared/common/styles';
 import Spacing from '../../components/shared/Spacing';
+import VehicleTypesModal from './components/modals/vehicle-types.modal';
 import {recentActivities} from './data';
 import {
   DeliveryOption,
@@ -39,9 +42,18 @@ import {
 
 const Home = () => {
   const theme = useTheme();
+  const [showVehicleTypesModal, setShowVehicleTypesModal] =
+    React.useState<boolean>(false);
+
   return (
     <HomeWrapper>
       <StatusBar barStyle="light-content" />
+      <BottomModal
+        visible={showVehicleTypesModal}
+        onRequestClose={() => setShowVehicleTypesModal(false)}
+        size={BOTTOM_MODAL_SIZE.medium}>
+        <VehicleTypesModal />
+      </BottomModal>
       <StyledScrollView>
         <HomeIntroBox>
           <HorizontalWrapper justify="space-between">
@@ -78,7 +90,7 @@ const Home = () => {
           </HorizontalWrapper>
         </HomeIntroBox>
         <DeliveryOptionsBox>
-          <DeliveryOption>
+          <DeliveryOption onPress={() => setShowVehicleTypesModal(true)}>
             <HorizontalWrapper justify="space-between">
               <HorizontalWrapper>
                 <Icon name={ICON_NAME.singleDelivery} />
@@ -95,7 +107,7 @@ const Home = () => {
               />
             </HorizontalWrapper>
           </DeliveryOption>
-          <DeliveryOption>
+          <DeliveryOption onPress={() => setShowVehicleTypesModal(true)}>
             <HorizontalWrapper justify="space-between">
               <HorizontalWrapper>
                 <Icon name={ICON_NAME.multipleDelivery} />
