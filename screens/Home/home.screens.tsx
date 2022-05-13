@@ -40,10 +40,24 @@ import {
   LastActivityItemDescription,
 } from './styles';
 
+export type DeliveryType = 'multiple' | 'single' | undefined;
+
 const Home = () => {
   const theme = useTheme();
   const [showVehicleTypesModal, setShowVehicleTypesModal] =
     React.useState<boolean>(false);
+  const [chosenDeliveryType, setChosenDeliveryType] =
+    React.useState<DeliveryType>();
+
+  /** handle delivery type selection and control opening and closing modal */
+  const chooseDeliveryType = React.useCallback((deliveryType: DeliveryType) => {
+    return () => {
+      if (deliveryType) {
+        setChosenDeliveryType(deliveryType);
+        setShowVehicleTypesModal(true);
+      }
+    };
+  }, []);
 
   return (
     <HomeWrapper>
@@ -52,7 +66,7 @@ const Home = () => {
         visible={showVehicleTypesModal}
         onRequestClose={() => setShowVehicleTypesModal(false)}
         size={BOTTOM_MODAL_SIZE.medium}>
-        <VehicleTypesModal />
+        <VehicleTypesModal deliveryType={chosenDeliveryType} />
       </BottomModal>
       <StyledScrollView>
         <HomeIntroBox>
@@ -90,7 +104,7 @@ const Home = () => {
           </HorizontalWrapper>
         </HomeIntroBox>
         <DeliveryOptionsBox>
-          <DeliveryOption onPress={() => setShowVehicleTypesModal(true)}>
+          <DeliveryOption onPress={chooseDeliveryType('single')}>
             <HorizontalWrapper justify="space-between">
               <HorizontalWrapper>
                 <Icon name={ICON_NAME.singleDelivery} />
@@ -107,7 +121,7 @@ const Home = () => {
               />
             </HorizontalWrapper>
           </DeliveryOption>
-          <DeliveryOption onPress={() => setShowVehicleTypesModal(true)}>
+          <DeliveryOption onPress={chooseDeliveryType('multiple')}>
             <HorizontalWrapper justify="space-between">
               <HorizontalWrapper>
                 <Icon name={ICON_NAME.multipleDelivery} />

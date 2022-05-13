@@ -1,5 +1,8 @@
+import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
+import {CompositeScreenProps, useNavigation} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import {useTheme} from 'styled-components';
 import {
   Icon,
@@ -12,6 +15,12 @@ import {
   VerticalWrapper,
 } from '../../../../components/shared/common/styles';
 import Spacing from '../../../../components/shared/Spacing';
+import {
+  MainTabStackParamList,
+  RootStackParamList,
+  ROOT_ROUTES,
+} from '../../../../navigation/typing';
+import {DeliveryType} from '../../home.screens';
 import {
   CloseIconBox,
   ModalHeader,
@@ -29,7 +38,20 @@ enum tooltipsInfoTypes {
   truck = 'truck',
 }
 
-const VehicleTypesModal = (props: any) => {
+type HomeNavigationProps = CompositeScreenProps<
+  BottomTabScreenProps<MainTabStackParamList, 'Home'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
+interface ModalProps {
+  deliveryType: DeliveryType;
+}
+
+const VehicleTypesModal: React.FC<ModalProps & any> = ({
+  deliveryType,
+  onRequestClose,
+}) => {
+  const navigation = useNavigation<HomeNavigationProps['navigation']>();
   const theme = useTheme();
   const [currentInfoTooltip, setCurrentInfoTooltip] = React.useState<
     tooltipsInfoTypes | undefined
@@ -58,6 +80,17 @@ const VehicleTypesModal = (props: any) => {
     [currentInfoTooltip],
   );
 
+  /** navigate to start of the order request form */
+  const navigateToDeliveryForm = React.useCallback(() => {
+    //close modal
+    onRequestClose();
+    return navigation.navigate(ROOT_ROUTES.PICKUP_AND_DELIVERY, {
+      multiple: deliveryType === 'multiple',
+      progress: 0,
+    });
+  }, [deliveryType, navigation, onRequestClose]);
+
+  //Todo refactor vehicle types to use one array
   return (
     <VehicleTypeModalBox>
       <HorizontalWrapper align="flex-start" justify="space-between">
@@ -67,7 +100,7 @@ const VehicleTypesModal = (props: any) => {
             Select a vehicle type that best meets with your needs.
           </ModalHeaderDescription>
         </VerticalWrapper>
-        <CloseIconBox onPress={props.onRequestClose}>
+        <CloseIconBox onPress={onRequestClose}>
           <Icon
             name={ICON_NAME.closeCircle}
             color={theme.palette.tertiary.grey430}
@@ -75,30 +108,32 @@ const VehicleTypesModal = (props: any) => {
         </CloseIconBox>
       </HorizontalWrapper>
       <Spacing direction="vertical" size={MARGIN_SIZES.small} />
-      <VehicleOptionModal>
-        <HorizontalWrapper align="flex-start" justify="space-between">
-          <HorizontalWrapper>
-            <Icon name={ICON_NAME.bike} />
-            <Spacing size={MARGIN_SIZES.small} />
-            <VerticalWrapper align="flex-start">
-              <ModalOptionTitle>Motor Bike</ModalOptionTitle>
-              <ModalOptionDescription>
-                Ideal for lightweight items: documents
-              </ModalOptionDescription>
-            </VerticalWrapper>
+      <TouchableWithoutFeedback onPress={navigateToDeliveryForm}>
+        <VehicleOptionModal>
+          <HorizontalWrapper align="flex-start" justify="space-between">
+            <HorizontalWrapper>
+              <Icon name={ICON_NAME.bike} />
+              <Spacing size={MARGIN_SIZES.small} />
+              <VerticalWrapper align="flex-start">
+                <ModalOptionTitle>Motor Bike</ModalOptionTitle>
+                <ModalOptionDescription>
+                  Ideal for lightweight items: documents
+                </ModalOptionDescription>
+              </VerticalWrapper>
+            </HorizontalWrapper>
+            <Tooltip
+              title="Motorbike"
+              content="Ideal for lightweight items such as documents, food, clothing items and smaller household appliances."
+              visible={isInfoModalVisible(tooltipsInfoTypes.bike)}
+              onRequestClose={infoTooltipHandler()}>
+              <TouchableOpacity
+                onPress={infoTooltipHandler(tooltipsInfoTypes.bike)}>
+                <Icon name={ICON_NAME.infoCircle} />
+              </TouchableOpacity>
+            </Tooltip>
           </HorizontalWrapper>
-          <Tooltip
-            title="Motorbike"
-            content="Ideal for lightweight items such as documents, food, clothing items and smaller household appliances."
-            visible={isInfoModalVisible(tooltipsInfoTypes.bike)}
-            onRequestClose={infoTooltipHandler()}>
-            <TouchableOpacity
-              onPress={infoTooltipHandler(tooltipsInfoTypes.bike)}>
-              <Icon name={ICON_NAME.infoCircle} />
-            </TouchableOpacity>
-          </Tooltip>
-        </HorizontalWrapper>
-      </VehicleOptionModal>
+        </VehicleOptionModal>
+      </TouchableWithoutFeedback>
       <Spacing direction="vertical" size={MARGIN_SIZES.small} />
       <VehicleOptionModal>
         <HorizontalWrapper align="flex-start" justify="space-between">

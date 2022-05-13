@@ -3,6 +3,7 @@ export enum ROOT_ROUTES {
   ONBOARDING = 'OnBoarding',
   AUTHENTICATION = 'Authentication',
   MAIN_TAB = 'MainTab',
+  PICKUP_AND_DELIVERY = 'PickUpAndDelivery',
 }
 
 /** Auth Routes */
@@ -46,4 +47,8 @@ export type RootStackParamList = {
   OnBoarding: undefined;
   Authentication: undefined;
   MainTab: undefined;
+  PickUpAndDelivery: {
+    progress: number;
+    multiple: boolean;
+  };
 };

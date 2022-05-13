@@ -9,6 +9,7 @@ import {MODES, OnBoarding} from '../components/shared';
 import {AppContext} from '../App';
 import {STORAGE_KEYS} from '../constants';
 import {RootStackParamList, ROOT_ROUTES} from './typing';
+import PickUpAndDelivery from '../screens/DeliveryRequest/pick-n-delivery.screens';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigation = () => {
@@ -39,6 +40,10 @@ const Navigation = () => {
             component={AuthNavigation}
           />
           <Stack.Screen name={ROOT_ROUTES.MAIN_TAB} component={MainTab} />
+          <Stack.Screen
+            component={PickUpAndDelivery}
+            name={ROOT_ROUTES.PICKUP_AND_DELIVERY}
+          />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
