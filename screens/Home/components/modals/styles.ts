@@ -4,7 +4,7 @@ import {Touchable} from '../../../../components/shared/common/styles';
 
 /** Layout styles */
 export const VehicleTypeModalBox = styled.View`
-  padding: 16px 15px;
+  padding: 16px 15px 0px 15px;
 `;
 
 export const VehicleOptionModal = styled.View`
@@ -13,6 +13,7 @@ export const VehicleOptionModal = styled.View`
   background-color: ${({theme}) => theme.palette.secondary.orange160};
   border-radius: ${({theme}) => `${theme.borderRadii.lg}px`};
   padding: 12px;
+  margin-bottom: ${({theme}) => `${theme.margin.medium}px`};
 `;
 
 export const CloseIconBox = styled(Touchable)`

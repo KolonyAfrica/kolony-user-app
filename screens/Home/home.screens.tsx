@@ -68,7 +68,7 @@ const Home = () => {
         size={BOTTOM_MODAL_SIZE.medium}>
         <VehicleTypesModal deliveryType={chosenDeliveryType} />
       </BottomModal>
-      <StyledScrollView>
+      <StyledScrollView showsVerticalScrollIndicator={false}>
         <HomeIntroBox>
           <HorizontalWrapper justify="space-between">
             <VerticalWrapper align="flex-start">
