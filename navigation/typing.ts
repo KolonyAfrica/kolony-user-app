@@ -4,6 +4,7 @@ export enum ROOT_ROUTES {
   AUTHENTICATION = 'Authentication',
   MAIN_TAB = 'MainTab',
   PICKUP_AND_DELIVERY = 'PickUpAndDelivery',
+  CONTACT_SEARCH = 'ContactSearch',
 }
 
 /** Auth Routes */
@@ -42,13 +43,16 @@ export type AuthStackParamList = {
   ResetPasswordForm: undefined;
 };
 
+type DeliveryRequestFormParams = {
+  progress: number;
+  multiple: boolean;
+};
+
 /** Root route param list  */
 export type RootStackParamList = {
   OnBoarding: undefined;
   Authentication: undefined;
   MainTab: undefined;
-  PickUpAndDelivery: {
-    progress: number;
-    multiple: boolean;
-  };
+  PickUpAndDelivery: DeliveryRequestFormParams;
+  ContactSearch: DeliveryRequestFormParams;
 };

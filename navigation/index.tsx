@@ -10,6 +10,7 @@ import {AppContext} from '../App';
 import {STORAGE_KEYS} from '../constants';
 import {RootStackParamList, ROOT_ROUTES} from './typing';
 import PickUpAndDelivery from '../screens/DeliveryRequest/pick-n-delivery.screens';
+import ContactSearch from '../screens/DeliveryRequest/contact-search.screens';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigation = () => {
@@ -43,6 +44,10 @@ const Navigation = () => {
           <Stack.Screen
             component={PickUpAndDelivery}
             name={ROOT_ROUTES.PICKUP_AND_DELIVERY}
+          />
+          <Stack.Screen
+            component={ContactSearch}
+            name={ROOT_ROUTES.CONTACT_SEARCH}
           />
         </Stack.Group>
       </Stack.Navigator>
