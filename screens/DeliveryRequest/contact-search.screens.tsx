@@ -53,13 +53,20 @@ interface SearchResultListProps {
 const SearchResultList: React.FC<SearchResultListProps> = React.memo(
   ({results}) => {
     const theme = useTheme();
+    const navigation = useNavigation<NavigationProps['navigation']>();
+    const route = useRoute<NavigationProps['route']>();
+    const goBackToPickDeliveryForm = () => {
+      navigation.navigate(ROOT_ROUTES.PICKUP_AND_DELIVERY, {
+        ...route.params,
+      });
+    };
     return (
       <VerticalWrapper align="flex-start">
         <VerticalWrapper align="flex-start">
           <SearchResultHeader>Contacts</SearchResultHeader>
           <Spacing direction="vertical" size={MARGIN_SIZES.small} />
           {results.map((contact, index) => (
-            <SearchResult key={index}>
+            <SearchResult key={index} onPress={goBackToPickDeliveryForm}>
               <HorizontalWrapper>
                 <Icon
                   name={ICON_NAME.user}
@@ -80,7 +87,7 @@ const SearchResultList: React.FC<SearchResultListProps> = React.memo(
           <SearchResultHeader>Locations</SearchResultHeader>
           <Spacing direction="vertical" size={MARGIN_SIZES.small} />
           {results.map((contact, index) => (
-            <SearchResult key={index}>
+            <SearchResult key={index} onPress={goBackToPickDeliveryForm}>
               <HorizontalWrapper>
                 <Icon
                   name={ICON_NAME.locationPointer}
@@ -101,7 +108,7 @@ const SearchResultList: React.FC<SearchResultListProps> = React.memo(
           <SearchResultHeader>Phone Numbers</SearchResultHeader>
           <Spacing direction="vertical" size={MARGIN_SIZES.small} />
           {results.map((contact, index) => (
-            <SearchResult key={index}>
+            <SearchResult key={index} onPress={goBackToPickDeliveryForm}>
               <HorizontalWrapper>
                 <Icon
                   name={ICON_NAME.call}

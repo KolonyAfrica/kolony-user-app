@@ -26,7 +26,7 @@ export const SearchResultHeader = styled.Text`
   font-weight: 700;
 `;
 
-export const SearchResult = styled.View`
+export const SearchResult = styled.TouchableOpacity`
   border-bottom-width: ${`${StyleSheet.hairlineWidth}px`};
   border-color: ${({theme}) => theme.palette.tertiary.grey230};
   margin-bottom: 18px;
