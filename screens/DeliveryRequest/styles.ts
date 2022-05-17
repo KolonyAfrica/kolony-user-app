@@ -70,8 +70,31 @@ export const ItemCategoryText = styled.Text<{selected: boolean}>`
     selected ? '#000000' : theme.palette.tertiary.grey310};
 `;
 
-export const ImagePickerBox = styled.View`
+export const ImagePickerBox = styled.TouchableOpacity`
   width: 100%;
+  height: 44px;
   background-color: ${({theme}) => theme.palette.secondary.orange160};
   border-radius: ${({theme}) => `${theme.borderRadii.sm}px`};
+  flex-direction: row;
+  flex: 1;
+  align-items: center;
+`;
+
+export const ImageIconBox = styled.View`
+  height: 44px;
+  width: 44px;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({theme}) => theme.palette.primary.blue};
+  border-bottom-left-radius: ${({theme}) => `${theme.borderRadii.sm}px`};
+  border-top-left-radius: ${({theme}) => `${theme.borderRadii.sm}px`};
+`;
+
+export const ImagePickerText = styled.Text`
+  font-family: ${({theme}) => theme.fontTypes.body};
+  font-size: ${({theme}) => `${theme.fontSizes.small}px`};
+  line-height: ${({theme}) => `${theme.lineHeight.small}px`};
+  font-weight: 400;
+  color: ${({theme}) => theme.palette.tertiary.grey320};
+  padding-left: ${({theme}) => `${theme.padding.medium}px`};
 `;

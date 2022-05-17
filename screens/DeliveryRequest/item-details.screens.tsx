@@ -4,6 +4,7 @@ import React from 'react';
 import {StatusBar} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTheme} from 'styled-components/native';
+import {launchImageLibrary} from 'react-native-image-picker';
 import {
   BaseTextInput,
   Button,
@@ -29,7 +30,13 @@ import GoBack from '../../components/shared/GoBack';
 import Spacing from '../../components/shared/Spacing';
 import {RootStackParamList, ROOT_ROUTES} from '../../navigation/typing';
 import {deliveryRequestTitles, itemCategories} from './data';
-import {ItemCategoryBox, ItemCategoryText} from './styles';
+import {
+  ImageIconBox,
+  ImagePickerBox,
+  ImagePickerText,
+  ItemCategoryBox,
+  ItemCategoryText,
+} from './styles';
 
 type NavigationProps = NativeStackScreenProps<
   RootStackParamList,
@@ -42,6 +49,11 @@ const ItemDetails = () => {
   const [selectedItemCategory, setSelectedItemCategory] =
     React.useState<string>('');
   const theme = useTheme();
+
+  const handleImageSelection = async () => {
+    const result = await launchImageLibrary({mediaType: 'photo'});
+    console.log('result', result);
+  };
 
   return (
     <ScreenWrapper>
@@ -105,6 +117,15 @@ const ItemDetails = () => {
             mode={INPUT_MODES.default}
             fill
           />
+          <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
+          <ImagePickerBox onPress={handleImageSelection}>
+            <ImageIconBox>
+              <Icon name={ICON_NAME.image} />
+            </ImageIconBox>
+            <FlexItemView>
+              <ImagePickerText>Upload an image of the item</ImagePickerText>
+            </FlexItemView>
+          </ImagePickerBox>
           <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
           <BaseTextInput
             label="Delivery Note (Optional)"
