@@ -4,7 +4,7 @@ export const deliveryRequestTitles = [
   'Time',
   'Summary',
   'Payment',
-];
+] as const;
 
 /** contact search results */
 export const searchResults = [
@@ -35,4 +35,17 @@ export const searchResults = [
       fullAddress: 'Unilag area, Yaba Lagos',
     },
   },
+];
+
+/**Item categories */
+export const itemCategories = [
+  {label: 'Clothing/Shoe', value: 'Clothing/Shoe'},
+  {label: 'Document', value: 'Document'},
+  {label: 'Computer', value: 'Computer'},
+  {label: 'Phone', value: 'Phone'},
+  {label: 'Electronic', value: 'Electronic'},
+  {label: 'Jewelries', value: 'Jewelries'},
+  {label: 'Food', value: 'Food'},
+  {label: 'Health Product', value: 'Health Product'},
+  {label: 'Other', value: 'Other'},
 ];

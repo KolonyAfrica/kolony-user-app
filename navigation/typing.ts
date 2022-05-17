@@ -5,6 +5,8 @@ export enum ROOT_ROUTES {
   MAIN_TAB = 'MainTab',
   PICKUP_AND_DELIVERY = 'PickUpAndDelivery',
   CONTACT_SEARCH = 'ContactSearch',
+  ITEM_DETAILS = 'ItemDetails',
+  SELECT_PICKUP_TYPE = 'SelectPickupType',
 }
 
 /** Auth Routes */
@@ -55,4 +57,6 @@ export type RootStackParamList = {
   MainTab: undefined;
   PickUpAndDelivery: DeliveryRequestFormParams;
   ContactSearch: DeliveryRequestFormParams;
+  ItemDetails: DeliveryRequestFormParams;
+  SelectPickupType: DeliveryRequestFormParams;
 };

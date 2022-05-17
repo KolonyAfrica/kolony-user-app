@@ -9,10 +9,11 @@ import {
   Button,
   BUTTON_TYPES,
   DeliveryFlow,
+  Dropdown,
   Icon,
   ICON_NAME,
   INPUT_MODES,
-  LocationInput,
+  Label,
   MARGIN_SIZES,
 } from '../../components/shared';
 import {
@@ -22,21 +23,26 @@ import {
   ScreenWrapper,
   StyledScrollView,
   SubScreenTitle,
+  VerticalWrapper,
 } from '../../components/shared/common/styles';
 import GoBack from '../../components/shared/GoBack';
 import Spacing from '../../components/shared/Spacing';
 import {RootStackParamList, ROOT_ROUTES} from '../../navigation/typing';
-import {deliveryRequestTitles} from './data';
+import {deliveryRequestTitles, itemCategories} from './data';
+import {ItemCategoryBox, ItemCategoryText} from './styles';
 
 type NavigationProps = NativeStackScreenProps<
   RootStackParamList,
-  ROOT_ROUTES.CONTACT_SEARCH
+  ROOT_ROUTES.ITEM_DETAILS
 >;
 
-const PickUpAndDelivery = () => {
-  const route = useRoute<NavigationProps['route']>();
-  const theme = useTheme();
+const ItemDetails = () => {
   const navigation = useNavigation<NavigationProps['navigation']>();
+  const route = useRoute<NavigationProps['route']>();
+  const [selectedItemCategory, setSelectedItemCategory] =
+    React.useState<string>('');
+  const theme = useTheme();
+
   return (
     <ScreenWrapper>
       <StatusBar barStyle="dark-content" />
@@ -51,76 +57,70 @@ const PickUpAndDelivery = () => {
             </FlexItemView>
           </HorizontalWrapper>
           <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
-          <DeliveryFlow titles={deliveryRequestTitles} />
+          <DeliveryFlow
+            titles={deliveryRequestTitles}
+            customIndex={route.params.progress ?? 1}
+          />
           <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
-          <SubScreenTitle>Pickup and Delivery</SubScreenTitle>
+          <SubScreenTitle>Item Details</SubScreenTitle>
           <Spacing direction="vertical" size={MARGIN_SIZES.small} />
           <BaseTextInput
-            placeholder="Search by name, phone, email..."
-            mode={INPUT_MODES.disabled}
-            leftIcon={() => <Icon name={ICON_NAME.search} />}
-            bgColor={theme.palette.secondary.orange160}
-            borderColor="transparent"
-            marginBottom={MARGIN_SIZES.medium}
+            label="Item Name"
+            placeholder="IPhone 13 Mini"
+            mode={INPUT_MODES.default}
             fill
-            onFocus={() =>
-              navigation.navigate(ROOT_ROUTES.CONTACT_SEARCH, {
-                multiple: route.params.multiple ?? false,
-                progress: 0,
-              })
-            }
           />
+          <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
+          <VerticalWrapper align="flex-start" justify="flex-start">
+            <Label>Item Category</Label>
+            <Spacing direction="vertical" />
+            <Dropdown
+              onSelect={({value}) => setSelectedItemCategory(value)}
+              data={itemCategories}>
+              <ItemCategoryBox>
+                <ItemCategoryText selected={!!selectedItemCategory.length}>
+                  {selectedItemCategory || 'Phones & Accessories'}
+                </ItemCategoryText>
+                <Icon
+                  name={ICON_NAME.arrow}
+                  direction="down"
+                  color={theme.palette.tertiary.grey310}
+                />
+              </ItemCategoryBox>
+            </Dropdown>
+          </VerticalWrapper>
 
-          <LocationInput
-            label="Pickup Address"
-            placeholder="Current location"
-            onSelection={address =>
-              console.log('Address', JSON.stringify(address, null, 2))
-            }
-          />
-          <LocationInput
-            label="Delivery Address"
-            placeholder="Enter Delivery Location"
-            onSelection={address =>
-              console.log('Address', JSON.stringify(address, null, 2))
-            }
-          />
+          <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
           <BaseTextInput
-            label="Receiver’s Full Name"
-            placeholder="Enter name"
+            label="Item Value"
+            placeholder="N500,000.00"
             mode={INPUT_MODES.default}
-            leftIcon={({textColor}) => (
-              <Icon name={ICON_NAME.user} size={18} color={textColor} />
-            )}
-            marginBottom={MARGIN_SIZES.small2}
             fill
           />
+          <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
           <BaseTextInput
-            label="Receiver’s Phone Number"
-            placeholder="+234000111222"
+            label="Item Quantity"
+            placeholder="3"
+            keyboardType="numeric"
             mode={INPUT_MODES.default}
-            leftIcon={({textColor}) => (
-              <Icon name={ICON_NAME.call} size={18} color={textColor} />
-            )}
-            marginBottom={MARGIN_SIZES.small2}
             fill
           />
+          <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
           <BaseTextInput
-            label="Receiver’s Email (Optional)"
-            placeholder="Enter email address"
+            label="Delivery Note (Optional)"
+            placeholder="Any specific details for the delivery"
             mode={INPUT_MODES.default}
-            leftIcon={({textColor}) => (
-              <Icon name={ICON_NAME.sms} size={18} color={textColor} />
-            )}
+            multiline
+            numberOfLines={4}
             fill
           />
-          <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
+          <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
           <Button
             type={BUTTON_TYPES.primary}
-            text="Next"
+            text="Continue"
             fill
             onPress={() =>
-              navigation.navigate(ROOT_ROUTES.ITEM_DETAILS, {
+              navigation.navigate(ROOT_ROUTES.SELECT_PICKUP_TYPE, {
                 ...route.params,
               })
             }
@@ -131,4 +131,4 @@ const PickUpAndDelivery = () => {
   );
 };
 
-export default PickUpAndDelivery;
+export default ItemDetails;
