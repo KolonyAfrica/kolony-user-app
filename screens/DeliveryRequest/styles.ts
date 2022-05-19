@@ -98,3 +98,25 @@ export const ImagePickerText = styled.Text`
   color: ${({theme}) => theme.palette.tertiary.grey320};
   padding-left: ${({theme}) => `${theme.padding.medium}px`};
 `;
+
+/**Select pickup Type */
+export const SelectBox = styled.TouchableOpacity<{selected: boolean}>`
+  width: 156px;
+  height: 109px;
+  background-color: ${({theme}) => theme.palette.secondary.orange160};
+  padding: 10px 13px;
+  border-radius: ${({theme}) => `${theme.borderRadii.lg}px`};
+  justify-content: space-between;
+  border: ${({theme, selected}) =>
+    `1px solid ${
+      selected
+        ? theme.palette.secondary.orange
+        : theme.palette.secondary.orange160
+    }`};
+`;
+
+export const SelectBoxText = styled.Text`
+  font-weight: 500;
+  font-size: ${({theme}) => `${theme.fontSizes.small}px`};
+  line-height: ${({theme}) => `${theme.lineHeight.small}px`};
+`;
