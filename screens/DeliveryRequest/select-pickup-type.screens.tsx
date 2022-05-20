@@ -46,25 +46,31 @@ const SelectPickup = () => {
 
   const isSelected = (type: PickupTypes) => selectedType === type;
 
+  /** select pickup type */
   const handleSchedulePickupSelection = React.useCallback(() => {
     setSelectedType('scheduled');
     setShowDateTimePickerModal(true);
   }, []);
+
+  const applySelectedSchedule = () => {
+    setShowDateTimePickerModal(false);
+    setShowSuccessPickerModal(true);
+  };
 
   return (
     <ScreenWrapper>
       <StatusBar barStyle="dark-content" />
       <SchedulePickupModal
         visible={showDateTimePickerModal}
-        applySelectedSchedule={() => {
-          setShowDateTimePickerModal(false);
-          setShowSuccessPickerModal(true);
-        }}
+        applySelectedSchedule={applySelectedSchedule}
         onRequestClose={() => setShowDateTimePickerModal(false)}
       />
       <CenteredModal
         visible={showSuccessPickerModal}
-        onRequestClose={() => setShowSuccessPickerModal(false)}
+        onRequestClose={() => {
+          setShowSuccessPickerModal(false);
+          navigation.navigate(ROOT_ROUTES.SUMMARY, {...route.params});
+        }}
         content={{
           title: 'Well done!',
           msg: 'Pickup time has been set',
@@ -112,9 +118,7 @@ const SelectPickup = () => {
             text="Preview"
             fill
             onPress={() =>
-              navigation.navigate(ROOT_ROUTES.ITEM_DETAILS, {
-                ...route.params,
-              })
+              navigation.navigate(ROOT_ROUTES.SUMMARY, {...route.params})
             }
           />
         </StyledScrollView>

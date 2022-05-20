@@ -15,7 +15,7 @@ export const AppContext = React.createContext<{
 const App = () => {
   const [showOnBoarding, setShowOnBoarding] = React.useState<
     boolean | undefined
-  >();
+  >(false);
 
   /**
    * Initial steps before app launch

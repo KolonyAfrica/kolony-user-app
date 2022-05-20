@@ -7,6 +7,7 @@ export enum ROOT_ROUTES {
   CONTACT_SEARCH = 'ContactSearch',
   ITEM_DETAILS = 'ItemDetails',
   SELECT_PICKUP_TYPE = 'SelectPickupType',
+  SUMMARY = 'Summary',
 }
 
 /** Auth Routes */
@@ -59,4 +60,5 @@ export type RootStackParamList = {
   ContactSearch: DeliveryRequestFormParams;
   ItemDetails: DeliveryRequestFormParams;
   SelectPickupType: DeliveryRequestFormParams;
+  Summary: DeliveryRequestFormParams;
 };

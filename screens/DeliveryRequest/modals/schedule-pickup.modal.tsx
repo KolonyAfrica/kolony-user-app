@@ -15,6 +15,7 @@ import {
   FlexItemView,
   HorizontalWrapper,
   ScreenWrapper,
+  StyledScrollView,
 } from '../../../components/shared/common/styles';
 import Spacing from '../../../components/shared/Spacing';
 
@@ -42,6 +43,17 @@ interface PickerProps {
   children?: JSX.Element | JSX.Element[];
   onRequestClose: () => void;
 }
+
+const hours = [
+  {label: '1', value: '1'},
+  {label: '2', value: '2'},
+  {label: '3', value: '3'},
+  {label: '4', value: '4'},
+  {label: '5', value: '5'},
+  {label: '6', value: '6'},
+  {label: '7', value: '7'},
+  {label: '8', value: '8'},
+];
 
 type fontWeightType =
   | 'bold'
@@ -112,117 +124,115 @@ const SchedulePickupModal: React.FC<PickerProps> = ({
       onRequestClose={onRequestClose}
       size={BOTTOM_MODAL_SIZE.medium}>
       <ScreenWrapper>
-        <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
-        <Calendar
-          current={selected}
-          theme={{
-            todayTextColor: theme.palette.primary.blue,
-            todayBackgroundColor: '#ffffff',
-            textDayFontFamily: theme.fontTypes.body,
-            textMonthFontFamily: theme.fontTypes.body,
-            textDayHeaderFontFamily: theme.fontTypes.body,
-            textDayFontSize: 14,
-            textMonthFontSize: 14,
-            textMonthFontWeight: 'bold',
-            textDisabledColor: theme.palette.tertiary.grey310,
-            textDayFontWeight: '400',
-            header: {
-              marginBottom: 10,
-            },
-          }}
-          onDayPress={onDayPress}
-          markingType="custom"
-          markedDates={marked}
-          renderArrow={direction => (
-            <>
-              <Icon
-                name={ICON_NAME.arrow}
-                direction={direction}
-                color={theme.palette.primary.blue900}
-              />
-              <Spacing size={MARGIN_SIZES.large} />
-            </>
-          )}
-          renderHeader={date => (
-            <CalendarHeaderText>
-              {new Date(date).toLocaleString('default', {month: 'long'})}{' '}
-              {date.getFullYear()}
-            </CalendarHeaderText>
-          )}
-        />
-        <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
-        <HorizontalWrapper justify="center">
-          <Icon
-            name={ICON_NAME.clock}
-            color={theme.palette.primary.blue}
-            size={28}
+        <StyledScrollView showsVerticalScrollIndicator={false}>
+          <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
+          <Calendar
+            current={selected}
+            theme={{
+              todayTextColor: theme.palette.primary.blue,
+              todayBackgroundColor: '#ffffff',
+              textDayFontFamily: theme.fontTypes.body,
+              textMonthFontFamily: theme.fontTypes.body,
+              textDayHeaderFontFamily: theme.fontTypes.body,
+              textDayFontSize: 14,
+              textMonthFontSize: 14,
+              textMonthFontWeight: 'bold',
+              textDisabledColor: theme.palette.tertiary.grey310,
+              textDayFontWeight: '400',
+              header: {
+                marginBottom: 10,
+              },
+            }}
+            onDayPress={onDayPress}
+            markingType="custom"
+            markedDates={marked}
+            renderArrow={direction => (
+              <>
+                <Icon
+                  name={ICON_NAME.arrow}
+                  direction={direction}
+                  color={theme.palette.primary.blue900}
+                />
+                <Spacing size={MARGIN_SIZES.large} />
+              </>
+            )}
+            renderHeader={date => (
+              <CalendarHeaderText>
+                {new Date(date).toLocaleString('default', {month: 'long'})}{' '}
+                {date.getFullYear()}
+              </CalendarHeaderText>
+            )}
           />
-          <Spacing size={MARGIN_SIZES.small} />
-          <Dropdown onSelect={() => {}} data={[{label: '10', value: '10'}]}>
-            <HorizontalWrapper>
-              <TimeText>09</TimeText>
-              <Icon
-                name={ICON_NAME.arrow}
-                direction="down"
-                color={theme.palette.secondary.orange410}
-              />
-            </HorizontalWrapper>
-          </Dropdown>
-          <Spacing />
-          <TimeText>to</TimeText>
-          <Spacing />
-          <Dropdown
-            onSelect={() => {}}
-            data={[
-              {label: '12', value: '12'},
-              {label: '1', value: '1'},
-            ]}>
-            <HorizontalWrapper>
-              <TimeText>11</TimeText>
-              <Icon
-                name={ICON_NAME.arrow}
-                direction="down"
-                color={theme.palette.secondary.orange410}
-              />
-            </HorizontalWrapper>
-          </Dropdown>
-          <Spacing size={MARGIN_SIZES.small} />
-          <Dropdown
-            onSelect={() => {}}
-            data={[
-              {label: 'AM', value: 'AM'},
-              {label: 'PM', value: 'PM'},
-            ]}>
-            <HorizontalWrapper>
-              <TimeText>AM</TimeText>
-              <Icon
-                name={ICON_NAME.arrow}
-                direction="down"
-                color={theme.palette.secondary.orange410}
-              />
-            </HorizontalWrapper>
-          </Dropdown>
-        </HorizontalWrapper>
-        <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
-        <HorizontalWrapper>
-          <FlexItemView>
-            <Button
-              type={BUTTON_TYPES.primary}
-              text="Apply"
-              fill
-              onPress={applySelectedSchedule}
+          <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
+          <HorizontalWrapper justify="center">
+            <Icon
+              name={ICON_NAME.clock}
+              color={theme.palette.primary.blue}
+              size={28}
             />
-          </FlexItemView>
-          <Spacing size={MARGIN_SIZES.small2} />
-          <FlexItemView>
-            <Button
-              type={BUTTON_TYPES.primaryALT}
-              text="Cancel"
-              fill
-              onPress={onRequestClose}
-            />
-          </FlexItemView>
-        </HorizontalWrapper>
+            <Spacing size={MARGIN_SIZES.small} />
+            <Dropdown onSelect={() => {}} data={hours} justify="center">
+              <HorizontalWrapper>
+                <TimeText>09</TimeText>
+                <Icon
+                  name={ICON_NAME.arrow}
+                  direction="down"
+                  color={theme.palette.secondary.orange410}
+                />
+              </HorizontalWrapper>
+            </Dropdown>
+            <Spacing />
+            <TimeText>to</TimeText>
+            <Spacing />
+            <Dropdown onSelect={() => {}} justify="center" data={hours}>
+              <HorizontalWrapper>
+                <TimeText>11</TimeText>
+                <Icon
+                  name={ICON_NAME.arrow}
+                  direction="down"
+                  color={theme.palette.secondary.orange410}
+                />
+              </HorizontalWrapper>
+            </Dropdown>
+            <Spacing size={MARGIN_SIZES.small} />
+            <Dropdown
+              onSelect={() => {}}
+              justify="center"
+              data={[
+                {label: 'AM', value: 'AM'},
+                {label: 'PM', value: 'PM'},
+              ]}>
+              <HorizontalWrapper>
+                <TimeText>AM</TimeText>
+                <Icon
+                  name={ICON_NAME.arrow}
+                  direction="down"
+                  color={theme.palette.secondary.orange410}
+                />
+              </HorizontalWrapper>
+            </Dropdown>
+          </HorizontalWrapper>
+          <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
+          <HorizontalWrapper>
+            <FlexItemView>
+              <Button
+                type={BUTTON_TYPES.primary}
+                text="Apply"
+                fill
+                onPress={applySelectedSchedule}
+              />
+            </FlexItemView>
+            <Spacing size={MARGIN_SIZES.small2} />
+            <FlexItemView>
+              <Button
+                type={BUTTON_TYPES.primaryALT}
+                text="Cancel"
+                fill
+                onPress={onRequestClose}
+              />
+            </FlexItemView>
+          </HorizontalWrapper>
+        </StyledScrollView>
       </ScreenWrapper>
     </BottomModal>
   );
