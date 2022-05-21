@@ -14,6 +14,7 @@ import ContactSearch from '../screens/DeliveryRequest/contact-search.screens';
 import ItemDetails from '../screens/DeliveryRequest/item-details.screens';
 import SelectPickup from '../screens/DeliveryRequest/select-pickup-type.screens';
 import Summary from '../screens/DeliveryRequest/summary.screens';
+import PaymentSummary from '../screens/DeliveryRequest/payment-summary-screens';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigation = () => {
@@ -61,6 +62,10 @@ const Navigation = () => {
             name={ROOT_ROUTES.SELECT_PICKUP_TYPE}
           />
           <Stack.Screen component={Summary} name={ROOT_ROUTES.SUMMARY} />
+          <Stack.Screen
+            component={PaymentSummary}
+            name={ROOT_ROUTES.PAYMENT_SUMMARY}
+          />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

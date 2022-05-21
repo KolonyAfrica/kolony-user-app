@@ -120,3 +120,34 @@ export const SelectBoxText = styled.Text`
   font-size: ${({theme}) => `${theme.fontSizes.small}px`};
   line-height: ${({theme}) => `${theme.lineHeight.small}px`};
 `;
+
+/**  Delivery Summary styles */
+export const SummaryCardHeaderText = styled.Text<{
+  light?: boolean;
+  medium?: boolean;
+}>`
+  font-family: ${({theme}) => theme.fontTypes.body};
+  font-size: ${({theme}) => `${theme.fontSizes.small}px`};
+  line-height: ${({theme}) => `${theme.lineHeight.small}px`};
+  font-weight: ${({light, medium}) => (light ? '400' : medium ? '500' : '700')};
+  color: ${({theme}) => theme.palette.primary.blue900};
+`;
+
+export const SummaryCardDescription = styled.Text`
+  font-family: ${({theme}) => theme.fontTypes.body};
+  font-size: ${({theme}) => `${theme.fontSizes.tiny}px`};
+  line-height: ${({theme}) => `${theme.lineHeight.tiny}px`};
+  font-weight: 400;
+  color: ${({theme}) => theme.palette.tertiary.grey320};
+  width: 70%;
+  padding-top: ${({theme}) => `${theme.padding.tiny}px`};
+`;
+
+export const SummaryCardIconBox = styled.View<{small?: boolean}>`
+  width: ${({small}) => (small ? '30px' : '40px')};
+  height: ${({small}) => (small ? '30px' : '40px')};
+  border-radius: ${({small}) => (small ? '30px' : '40px')};
+  background-color: ${({theme}) => theme.palette.primary.blue100};
+  justify-content: center;
+  align-items: center;
+`;

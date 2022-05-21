@@ -8,6 +8,7 @@ export enum ROOT_ROUTES {
   ITEM_DETAILS = 'ItemDetails',
   SELECT_PICKUP_TYPE = 'SelectPickupType',
   SUMMARY = 'Summary',
+  PAYMENT_SUMMARY = 'PaymentSummary',
 }
 
 /** Auth Routes */
@@ -61,4 +62,5 @@ export type RootStackParamList = {
   ItemDetails: DeliveryRequestFormParams;
   SelectPickupType: DeliveryRequestFormParams;
   Summary: DeliveryRequestFormParams;
+  PaymentSummary: DeliveryRequestFormParams;
 };

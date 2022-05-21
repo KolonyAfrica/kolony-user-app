@@ -37,6 +37,7 @@ const SummaryContentBox = styled.View`
   min-height: 99px;
   height: auto;
   width: 100%;
+  padding: 10px;
   border-radius: ${({theme}) => `${theme.borderRadii.sm}px`};
   background-color: ${({theme}) => theme.palette.secondary.orange160};
 `;

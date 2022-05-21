@@ -69,7 +69,9 @@ const SelectPickup = () => {
         visible={showSuccessPickerModal}
         onRequestClose={() => {
           setShowSuccessPickerModal(false);
-          navigation.navigate(ROOT_ROUTES.SUMMARY, {...route.params});
+          navigation.navigate(ROOT_ROUTES.SUMMARY, {
+            ...route.params,
+          });
         }}
         content={{
           title: 'Well done!',
@@ -106,7 +108,7 @@ const SelectPickup = () => {
               selected={selectedType === 'scheduled'}
               onPress={handleSchedulePickupSelection}>
               <Icon
-                name={ICON_NAME.calendar}
+                name={ICON_NAME.circleCalendar}
                 invert={isSelected('scheduled')}
               />
               <SelectBoxText>Scheduled Pickup</SelectBoxText>
@@ -118,7 +120,9 @@ const SelectPickup = () => {
             text="Preview"
             fill
             onPress={() =>
-              navigation.navigate(ROOT_ROUTES.SUMMARY, {...route.params})
+              navigation.navigate(ROOT_ROUTES.SUMMARY, {
+                ...route.params,
+              })
             }
           />
         </StyledScrollView>
