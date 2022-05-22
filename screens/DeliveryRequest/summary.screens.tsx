@@ -8,6 +8,7 @@ import {
   Button,
   BUTTON_TYPES,
   CenteredModal,
+  DateTimePicker,
   DeliveryFlow,
   Icon,
   ICON_NAME,
@@ -31,7 +32,6 @@ import {deliveryRequestTitles} from './data';
 import EditItemDetailsModal from './modals/edit-item-details.modals';
 import EditPaymentModal from './modals/edit-payment.modal';
 import EditPickUpDetails from './modals/edit-pickup-details';
-import EditPickupTimeModal from './modals/edit-pickup-time.modal';
 import EditReceiverDetails from './modals/edit-receiver-details';
 import {
   SummaryCardDescription,
@@ -47,22 +47,27 @@ export enum SUMMARY_EDIT_MODAL {
   editReceiverDetails = 'editReceiverDetails',
 }
 
+export interface EditModalProps {
+  onRequestClose: () => void;
+}
+
 const Modals = {
   editPayment: EditPaymentModal,
-  editPickupTime: EditPickupTimeModal,
+  editPickupTime: DateTimePicker,
   editItemDetails: EditItemDetailsModal,
   editReceiverDetails: EditReceiverDetails,
   editPickupDetails: EditPickUpDetails,
 };
 
-const SummaryEditModal: React.FC<{modal: SUMMARY_EDIT_MODAL | undefined}> =
-  React.memo(({modal, ...otherProps}) => {
-    if (!modal) {
-      return null;
-    }
-    const SelectedModal = Modals[modal] as React.ElementType;
-    return SelectedModal ? <SelectedModal {...otherProps} /> : null;
-  });
+const SummaryEditModal: React.FC<
+  {modal: SUMMARY_EDIT_MODAL | undefined} & EditModalProps
+> = React.memo(({modal, ...otherProps}) => {
+  if (!modal) {
+    return null;
+  }
+  const SelectedModal = Modals[modal] as React.ElementType;
+  return SelectedModal ? <SelectedModal {...otherProps} /> : null;
+});
 
 type NavigationProps = NativeStackScreenProps<
   RootStackParamList,
@@ -77,14 +82,26 @@ const Summary = () => {
   >();
   const theme = useTheme();
 
+  const isPickupTimeModalSelected =
+    selectedEditModal === SUMMARY_EDIT_MODAL.editPickupTime;
+
   return (
     <ScreenWrapper>
       <StatusBar barStyle="dark-content" />
       <CenteredModal
-        visible={!!selectedEditModal}
+        visible={!!selectedEditModal && !isPickupTimeModalSelected}
         onRequestClose={() => setSelectedEditModal(undefined)}>
-        <SummaryEditModal modal={selectedEditModal} />
+        <SummaryEditModal
+          modal={selectedEditModal}
+          onRequestClose={() => setSelectedEditModal(undefined)}
+        />
       </CenteredModal>
+      <DateTimePicker
+        visible={isPickupTimeModalSelected}
+        applySelectedSchedule={() => {}}
+        onRequestClose={() => setSelectedEditModal(undefined)}
+        btnActionName="Update"
+      />
       <SafeAreaView>
         <StyledScrollView showsVerticalScrollIndicator={false}>
           <HorizontalWrapper>

@@ -15,6 +15,7 @@ import {
   Button,
   BUTTON_TYPES,
   CenteredModal,
+  DateTimePicker,
   DeliveryFlow,
   Icon,
   ICON_NAME,
@@ -25,7 +26,6 @@ import {RootStackParamList, ROOT_ROUTES} from '../../navigation/typing';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {SelectBox, SelectBoxText} from './styles';
-import SchedulePickupModal from './modals/schedule-pickup.modal';
 
 type NavigationProps = NativeStackScreenProps<
   RootStackParamList,
@@ -60,7 +60,7 @@ const SelectPickup = () => {
   return (
     <ScreenWrapper>
       <StatusBar barStyle="dark-content" />
-      <SchedulePickupModal
+      <DateTimePicker
         visible={showDateTimePickerModal}
         applySelectedSchedule={applySelectedSchedule}
         onRequestClose={() => setShowDateTimePickerModal(false)}

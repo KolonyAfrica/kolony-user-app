@@ -151,3 +151,20 @@ export const SummaryCardIconBox = styled.View<{small?: boolean}>`
   justify-content: center;
   align-items: center;
 `;
+
+/** Delivery Summary modal styles   */
+export const ModalTitle = styled.Text`
+  font-family: ${({theme}) => theme.fontTypes.body};
+  font-size: ${({theme}) => `${theme.fontSizes.body}px`};
+  line-height: ${({theme}) => `${theme.lineHeight.body}px`};
+  font-weight: 700;
+  color: ${({theme}) => theme.palette.primary.blue900};
+`;
+
+export const ModalTitleDescription = styled.Text`
+  font-family: ${({theme}) => theme.fontTypes.body};
+  font-size: ${({theme}) => `${theme.fontSizes.small}px`};
+  line-height: ${({theme}) => `${theme.lineHeight.small}px`};
+  font-weight: 700;
+  color: ${({theme}) => theme.palette.tertiary.grey320};
+`;
