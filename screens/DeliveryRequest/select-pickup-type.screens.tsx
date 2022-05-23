@@ -1,19 +1,17 @@
 import {StatusBar} from 'react-native';
 import React from 'react';
 import {
-  CenteredTitle,
-  FlexItemView,
   HorizontalWrapper,
   ScreenWrapper,
   StyledScrollView,
   SubScreenTitle,
 } from '../../components/shared/common/styles';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import GoBack from '../../components/shared/GoBack';
 import Spacing from '../../components/shared/Spacing';
 import {
   Button,
   BUTTON_TYPES,
+  CenteredHeaderTitle,
   CenteredModal,
   DateTimePicker,
   DeliveryFlow,
@@ -81,14 +79,11 @@ const SelectPickup = () => {
       />
       <SafeAreaView>
         <StyledScrollView showsVerticalScrollIndicator={false}>
-          <HorizontalWrapper>
-            <GoBack showText={false} mode="primary" />
-            <FlexItemView>
-              <HorizontalWrapper justify="center">
-                <CenteredTitle>Single Delivery</CenteredTitle>
-              </HorizontalWrapper>
-            </FlexItemView>
-          </HorizontalWrapper>
+          <CenteredHeaderTitle
+            title="Single Delivery"
+            addBackText={false}
+            mode="primary"
+          />
           <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
           <DeliveryFlow titles={deliveryRequestTitles} customIndex={1} />
           <Spacing direction="vertical" size={MARGIN_SIZES.medium} />

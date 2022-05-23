@@ -7,6 +7,7 @@ import {useTheme} from 'styled-components/native';
 import {
   Button,
   BUTTON_TYPES,
+  CenteredHeaderTitle,
   CenteredModal,
   DateTimePicker,
   DeliveryFlow,
@@ -15,8 +16,6 @@ import {
   MARGIN_SIZES,
 } from '../../components/shared';
 import {
-  CenteredTitle,
-  FlexItemView,
   HorizontalWrapper,
   PushToEnd,
   ScreenWrapper,
@@ -24,7 +23,6 @@ import {
   SubScreenTitle,
   VerticalWrapper,
 } from '../../components/shared/common/styles';
-import GoBack from '../../components/shared/GoBack';
 import Spacing from '../../components/shared/Spacing';
 import {RootStackParamList, ROOT_ROUTES} from '../../navigation/typing';
 import SummaryCard from './components/summary-card.components';
@@ -104,14 +102,11 @@ const Summary = () => {
       />
       <SafeAreaView>
         <StyledScrollView showsVerticalScrollIndicator={false}>
-          <HorizontalWrapper>
-            <GoBack showText={false} mode="primary" />
-            <FlexItemView>
-              <HorizontalWrapper justify="center">
-                <CenteredTitle>Send a Package</CenteredTitle>
-              </HorizontalWrapper>
-            </FlexItemView>
-          </HorizontalWrapper>
+          <CenteredHeaderTitle
+            title="Single Package"
+            addBackText={false}
+            mode="primary"
+          />
           <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
           <DeliveryFlow titles={deliveryRequestTitles} customIndex={2} />
           <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
