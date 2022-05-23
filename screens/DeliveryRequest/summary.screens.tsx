@@ -243,7 +243,7 @@ const Summary = () => {
           <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
           <Button
             type={BUTTON_TYPES.primary}
-            text="Send Pickup Request"
+            text="Continue"
             fill
             onPress={() =>
               navigation.navigate(ROOT_ROUTES.PAYMENT_SUMMARY, {
