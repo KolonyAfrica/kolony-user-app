@@ -3,13 +3,18 @@ import {StatusBar, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import styled, {useTheme} from 'styled-components/native';
 import {
+  BaseTextInput,
+  BottomModal,
+  BOTTOM_MODAL_SIZE,
   CenteredHeaderTitle,
   DeliveryFlow,
   Icon,
   ICON_NAME,
+  INPUT_MODES,
   MARGIN_SIZES,
 } from '../../components/shared';
 import {
+  FlexItemView,
   HorizontalWrapper,
   ScreenWrapper,
   StyledScrollView,
@@ -18,6 +23,7 @@ import {
 } from '../../components/shared/common/styles';
 import Spacing from '../../components/shared/Spacing';
 import {deliveryRequestTitles} from './data';
+import PaymentConfirmationModal from './modals/payment-confirmation.modal';
 
 /** styles */
 const RadioBox = styled.View`
@@ -62,6 +68,8 @@ const PaymentSummary = () => {
   const [chosenPaymentOption, setChosenPaymentOption] = React.useState<
     PAYMENT_OPTIONS | undefined
   >();
+  const [showConfirmationModal, setConfirmationModalVisibility] =
+    React.useState<boolean>(false);
 
   const selectedPaymentOptions = {
     card: chosenPaymentOption === PAYMENT_OPTIONS.card,
@@ -71,8 +79,16 @@ const PaymentSummary = () => {
 
   const handlePaymentModeSelection = React.useCallback(
     (mode: PAYMENT_OPTIONS) => {
+      let confirmModalId: ReturnType<typeof setTimeout>;
       return () => {
         setChosenPaymentOption(mode);
+        if (confirmModalId) {
+          clearTimeout(confirmModalId);
+        } else {
+          confirmModalId = setTimeout(() => {
+            setConfirmationModalVisibility(true);
+          }, 300);
+        }
       };
     },
     [],
@@ -81,6 +97,15 @@ const PaymentSummary = () => {
   return (
     <ScreenWrapper>
       <StatusBar barStyle="dark-content" />
+      <BottomModal
+        visible={showConfirmationModal}
+        onRequestClose={() => setConfirmationModalVisibility(false)}
+        size={BOTTOM_MODAL_SIZE.small}>
+        <PaymentConfirmationModal
+          onConfirm={() => {}}
+          onRequestClose={() => setConfirmationModalVisibility(false)}
+        />
+      </BottomModal>
       <SafeAreaView>
         <StyledScrollView showsVerticalScrollIndicator={false}>
           <CenteredHeaderTitle
@@ -139,26 +164,30 @@ const PaymentSummary = () => {
           </HorizontalWrapper>
           <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
           <HorizontalWrapper justify="space-between" fill>
-            <HorizontalWrapper>
-              <Icon name={ICON_NAME.couponBadge} />
-              <Spacing />
-              <StyledText
-                fontSize={theme.fontSizes.small}
-                fontWeight={400}
-                color={theme.palette.tertiary.grey320}>
-                Promo Code
-              </StyledText>
-            </HorizontalWrapper>
-            <TouchableOpacity>
-              <StyledText
-                fontSize={theme.fontSizes.small}
-                fontWeight={500}
-                color={theme.palette.primary.blue}>
-                Apply
-              </StyledText>
-            </TouchableOpacity>
+            <FlexItemView flex={3}>
+              <BaseTextInput
+                placeholder="Promo Code"
+                mode={INPUT_MODES.default}
+                fill
+                leftIcon={() => <Icon name={ICON_NAME.couponBadge} />}
+                borderColor="transparent"
+                bgColor={theme.palette.tertiary.grey220}
+              />
+            </FlexItemView>
+            <FlexItemView>
+              <HorizontalWrapper fill justify="flex-end">
+                <TouchableOpacity>
+                  <StyledText
+                    fontSize={theme.fontSizes.small}
+                    fontWeight={500}
+                    color={theme.palette.primary.blue}>
+                    Apply
+                  </StyledText>
+                </TouchableOpacity>
+              </HorizontalWrapper>
+            </FlexItemView>
           </HorizontalWrapper>
-          <Spacing direction="vertical" size={MARGIN_SIZES.large} />
+          <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
           <SubScreenTitle>Select Payment Method</SubScreenTitle>
           <Spacing direction="vertical" size={MARGIN_SIZES.small} />
           <RadioButton
