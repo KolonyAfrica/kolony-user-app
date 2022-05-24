@@ -2,11 +2,14 @@ import React from 'react';
 import {StatusBar, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import styled, {useTheme} from 'styled-components/native';
+import {Paystack} from 'react-native-paystack-webview';
+import {PAYSTACK_PUBLIC_KEY} from '@env';
 import {
   BaseTextInput,
   BottomModal,
   BOTTOM_MODAL_SIZE,
   CenteredHeaderTitle,
+  CenteredModal,
   DeliveryFlow,
   Icon,
   ICON_NAME,
@@ -70,12 +73,14 @@ const PaymentSummary = () => {
   >();
   const [showConfirmationModal, setConfirmationModalVisibility] =
     React.useState<boolean>(false);
-
+  const [addCardSuccessModal, setAddCardSuccessModal] =
+    React.useState<boolean>(false);
   const selectedPaymentOptions = {
     card: chosenPaymentOption === PAYMENT_OPTIONS.card,
     cashOnPickup: chosenPaymentOption === PAYMENT_OPTIONS.cashOnPickup,
     cashOnDelivery: chosenPaymentOption === PAYMENT_OPTIONS.cashOnDelivery,
   };
+  const paystackWebViewRef = React.useRef<any>();
 
   const handlePaymentModeSelection = React.useCallback(
     (mode: PAYMENT_OPTIONS) => {
@@ -106,6 +111,28 @@ const PaymentSummary = () => {
           onRequestClose={() => setConfirmationModalVisibility(false)}
         />
       </BottomModal>
+      <CenteredModal
+        visible={addCardSuccessModal}
+        onRequestClose={() => setAddCardSuccessModal(false)}
+        content={{
+          title: 'Well done!',
+          msg: 'You have added card ****4081 to your account',
+          btnActionName: 'Find Rider',
+        }}
+      />
+      <Paystack
+        paystackKey={PAYSTACK_PUBLIC_KEY}
+        amount={'50.00'}
+        billingEmail="chkyko@yahoo.com"
+        activityIndicatorColor={theme.palette.primary.blue}
+        ref={paystackWebViewRef}
+        onCancel={() => {
+          // handle response here
+        }}
+        onSuccess={() => {
+          setAddCardSuccessModal(true);
+        }}
+      />
       <SafeAreaView>
         <StyledScrollView showsVerticalScrollIndicator={false}>
           <CenteredHeaderTitle
@@ -258,17 +285,20 @@ const PaymentSummary = () => {
             </StyledText>
           </RadioButton>
           <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
-          <HorizontalWrapper fill justify="center">
-            <Icon name={ICON_NAME.cardAdd} />
-            <Spacing size={MARGIN_SIZES.small} />
-            <StyledText
-              fontSize={theme.fontSizes.body}
-              fontWeight={500}
-              lineHeight={21}
-              color={theme.palette.tertiary.grey320}>
-              Add new card
-            </StyledText>
-          </HorizontalWrapper>
+          <TouchableOpacity
+            onPress={() => paystackWebViewRef.current.startTransaction()}>
+            <HorizontalWrapper fill justify="center">
+              <Icon name={ICON_NAME.cardAdd} />
+              <Spacing size={MARGIN_SIZES.small} />
+              <StyledText
+                fontSize={theme.fontSizes.body}
+                fontWeight={500}
+                lineHeight={21}
+                color={theme.palette.tertiary.grey320}>
+                Add new card
+              </StyledText>
+            </HorizontalWrapper>
+          </TouchableOpacity>
           <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
         </StyledScrollView>
       </SafeAreaView>
