@@ -1,3 +1,5 @@
+import {Rider} from '../screens/DeliveryPreview/find-rider.screens';
+
 /** Root Routes */
 export enum ROOT_ROUTES {
   ONBOARDING = 'OnBoarding',
@@ -10,6 +12,8 @@ export enum ROOT_ROUTES {
   SUMMARY = 'Summary',
   PAYMENT_SUMMARY = 'PaymentSummary',
   FIND_RIDER = 'FindRider',
+  CANCEL_DELIVERY = 'CancelDelivery',
+  CONFIRM_RIDER = 'ConfirmRider',
 }
 
 /** Auth Routes */
@@ -65,4 +69,8 @@ export type RootStackParamList = {
   Summary: DeliveryRequestFormParams;
   PaymentSummary: DeliveryRequestFormParams;
   FindRider: Pick<DeliveryRequestFormParams, 'multiple'>;
+  CancelDelivery: Pick<DeliveryRequestFormParams, 'multiple'>;
+  ConfirmRider: {
+    rider: Rider;
+  };
 };

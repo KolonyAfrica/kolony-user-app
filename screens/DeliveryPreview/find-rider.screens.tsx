@@ -48,7 +48,6 @@ const FindingRidersBanner = styled.View`
   background-color: #ffffff;
   border-radius: ${({theme}) => `${theme.borderRadii.sm}px`};
   position: absolute;
-  top: 1px;
   z-index: 2;
   top: ${`${statusBarHeight + 18}px`};
   left: 16px;
@@ -98,37 +97,53 @@ type NavigationProps = NativeStackScreenProps<
   ROOT_ROUTES.FIND_RIDER
 >;
 
-const FindRiderLoader = () => {
+const FindRiderLoader: React.FC<{foundRider?: Rider}> = ({foundRider}) => {
+  const navigation = useNavigation<NavigationProps['navigation']>();
   const rippleValueOne = new Animated.Value(0);
   const rippleValueTwo = new Animated.Value(0);
   const rippleValueThree = new Animated.Value(0);
+  const rippleAnimation = React.useRef(
+    Animated.parallel([
+      Animated.loop(
+        Animated.timing(rippleValueOne, {
+          toValue: 1,
+          duration: 2500,
+          delay: 100,
+          useNativeDriver: true,
+        }),
+      ),
+      Animated.loop(
+        Animated.timing(rippleValueTwo, {
+          toValue: 1,
+          duration: 3000,
+          delay: 500,
+          useNativeDriver: true,
+        }),
+      ),
+      Animated.loop(
+        Animated.timing(rippleValueThree, {
+          toValue: 1,
+          duration: 3000,
+          delay: 1200,
+          useNativeDriver: true,
+        }),
+      ),
+    ]),
+  );
 
-  Animated.parallel([
-    Animated.loop(
-      Animated.timing(rippleValueOne, {
-        toValue: 1,
-        duration: 3000,
-        delay: 100,
-        useNativeDriver: true,
-      }),
-    ),
-    Animated.loop(
-      Animated.timing(rippleValueTwo, {
-        toValue: 1,
-        duration: 3000,
-        delay: 500,
-        useNativeDriver: true,
-      }),
-    ),
-    Animated.loop(
-      Animated.timing(rippleValueThree, {
-        toValue: 1,
-        duration: 3000,
-        delay: 1000,
-        useNativeDriver: true,
-      }),
-    ),
-  ]).start();
+  React.useEffect(
+    function startAnimation() {
+      if (foundRider) {
+        rippleAnimation.current.stop();
+        navigation.navigate(ROOT_ROUTES.CONFIRM_RIDER, {
+          rider: foundRider,
+        });
+      } else {
+        rippleAnimation.current.start();
+      }
+    },
+    [foundRider, navigation],
+  );
 
   /** for the first ripple **/
   const opacityRippleOne = rippleValueOne.interpolate({
@@ -190,10 +205,43 @@ const FindRiderLoader = () => {
   );
 };
 
+const dummyFoundRider = {
+  name: 'Emmanuel Kokoma (Rider)',
+  vehicle: 'Toyota Corolla',
+  plateNumber: 'JJC234QC',
+  estTime: '6 mins',
+  rating: 4.5,
+};
+
+export interface Rider {
+  name: string;
+  vehicle: string;
+  plateNumber: string;
+  estTime: string;
+  rating: number;
+}
+
 const FindRider = () => {
   const theme = useTheme();
   const navigation = useNavigation<NavigationProps['navigation']>();
   const route = useRoute<NavigationProps['route']>();
+  const [foundRider, setFoundRider] = React.useState<Rider | undefined>();
+  let timeoutId = React.useRef<ReturnType<typeof setTimeout>>();
+
+  const findRider = () => {
+    timeoutId.current = setTimeout(() => {
+      setFoundRider(dummyFoundRider);
+    }, 8000);
+
+    return () => {
+      if (timeoutId.current) {
+        clearTimeout(timeoutId.current);
+      }
+    };
+  };
+
+  React.useEffect(findRider, []);
+
   return (
     <SafeAreaView>
       <StatusBar barStyle="dark-content" />
@@ -226,7 +274,7 @@ const FindRider = () => {
           </StyledText>
         </VerticalWrapper>
       </FindingRidersBanner>
-      <FindRiderLoader />
+      <FindRiderLoader foundRider={foundRider} />
       <CancelRequestBox>
         <StyledText
           fontSize={theme.fontSizes.body}
@@ -241,9 +289,8 @@ const FindRider = () => {
           text="Cancel Request"
           fill
           onPress={() =>
-            navigation.navigate(ROOT_ROUTES.PAYMENT_SUMMARY, {
+            navigation.navigate(ROOT_ROUTES.CANCEL_DELIVERY, {
               ...route.params,
-              progress: 3,
             })
           }
           leftIcon={({textColor}) => (

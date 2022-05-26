@@ -1,7 +1,8 @@
 import React from 'react';
+import {Text} from 'react-native';
 
 const ConfirmRider = () => {
-  return <></>;
+  return <Text>Select Rider</Text>;
 };
 
 export default ConfirmRider;

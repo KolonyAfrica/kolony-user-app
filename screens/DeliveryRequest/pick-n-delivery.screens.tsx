@@ -8,6 +8,7 @@ import {
   BaseTextInput,
   Button,
   BUTTON_TYPES,
+  CenteredHeaderTitle,
   DeliveryFlow,
   Icon,
   ICON_NAME,
@@ -16,14 +17,10 @@ import {
   MARGIN_SIZES,
 } from '../../components/shared';
 import {
-  CenteredTitle,
-  FlexItemView,
-  HorizontalWrapper,
   ScreenWrapper,
   StyledScrollView,
   SubScreenTitle,
 } from '../../components/shared/common/styles';
-import GoBack from '../../components/shared/GoBack';
 import Spacing from '../../components/shared/Spacing';
 import {RootStackParamList, ROOT_ROUTES} from '../../navigation/typing';
 import {deliveryRequestTitles} from './data';
@@ -42,14 +39,11 @@ const PickUpAndDelivery = () => {
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
         <StyledScrollView showsVerticalScrollIndicator={false}>
-          <HorizontalWrapper>
-            <GoBack showText={false} mode="primary" />
-            <FlexItemView>
-              <HorizontalWrapper justify="center">
-                <CenteredTitle>Single Delivery</CenteredTitle>
-              </HorizontalWrapper>
-            </FlexItemView>
-          </HorizontalWrapper>
+          <CenteredHeaderTitle
+            title="Single Delivery"
+            addBackText={false}
+            mode="primary"
+          />
           <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
           <DeliveryFlow titles={deliveryRequestTitles} />
           <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
