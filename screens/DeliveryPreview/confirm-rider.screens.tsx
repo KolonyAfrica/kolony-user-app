@@ -138,7 +138,10 @@ const ConfirmRider = () => {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}>
-          <Marker coordinate={startCoords} />
+          <Marker
+            coordinate={startCoords}
+            image={require('../../assets/images/current-location.png')}
+          />
           <Marker coordinate={endCoords} />
           <MapViewDirections
             origin={startCoords}
