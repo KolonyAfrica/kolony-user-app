@@ -44,7 +44,15 @@ const PaymentConfirmationModal: React.FC<{
           </FlexItemView>
           <Spacing size={MARGIN_SIZES.small} />
           <FlexItemView>
-            <Button type={BUTTON_TYPES.primary} text="Proceed" fill />
+            <Button
+              type={BUTTON_TYPES.primary}
+              text="Proceed"
+              fill
+              onPress={() => {
+                props.onRequestClose();
+                props.onConfirm();
+              }}
+            />
           </FlexItemView>
         </HorizontalWrapper>
       </VerticalWrapper>

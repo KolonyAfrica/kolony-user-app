@@ -27,6 +27,9 @@ import {
 import Spacing from '../../components/shared/Spacing';
 import {deliveryRequestTitles} from './data';
 import PaymentConfirmationModal from './modals/payment-confirmation.modal';
+import {RootStackParamList, ROOT_ROUTES} from '../../navigation/typing';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 /** styles */
 const RadioBox = styled.View`
@@ -66,8 +69,16 @@ enum PAYMENT_OPTIONS {
   cashOnDelivery,
 }
 
+type NavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  ROOT_ROUTES.PAYMENT_SUMMARY
+>;
+
 const PaymentSummary = () => {
   const theme = useTheme();
+  const navigation = useNavigation<NavigationProps['navigation']>();
+  const route = useRoute<NavigationProps['route']>();
+
   const [chosenPaymentOption, setChosenPaymentOption] = React.useState<
     PAYMENT_OPTIONS | undefined
   >();
@@ -107,13 +118,22 @@ const PaymentSummary = () => {
         onRequestClose={() => setConfirmationModalVisibility(false)}
         size={BOTTOM_MODAL_SIZE.small}>
         <PaymentConfirmationModal
-          onConfirm={() => {}}
+          onConfirm={() =>
+            navigation.navigate(ROOT_ROUTES.FIND_RIDER, {
+              multiple: route.params.multiple,
+            })
+          }
           onRequestClose={() => setConfirmationModalVisibility(false)}
         />
       </BottomModal>
       <CenteredModal
         visible={addCardSuccessModal}
         onRequestClose={() => setAddCardSuccessModal(false)}
+        onMainBtnPress={() =>
+          navigation.navigate(ROOT_ROUTES.FIND_RIDER, {
+            multiple: route.params.multiple,
+          })
+        }
         content={{
           title: 'Well done!',
           msg: 'You have added card ****4081 to your account',

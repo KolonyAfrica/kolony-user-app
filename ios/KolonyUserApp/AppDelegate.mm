@@ -4,6 +4,8 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "RNSplashScreen.h"
+#import <GoogleMaps/GoogleMaps.h>
+
 
 #import <React/RCTAppSetupUtils.h>
 
@@ -30,6 +32,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSServices provideAPIKey:@"AIzaSyCBrJtiJeQmj1kkXg2hKoTkGLjLCqZFxNY"];
   RCTAppSetupPrepareApp(application);
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
 
