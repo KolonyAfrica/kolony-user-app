@@ -11,10 +11,10 @@ import {
   Spacing,
 } from '../../components/shared';
 import {
+  statusBarHeight,
   StyledText,
   VerticalWrapper,
 } from '../../components/shared/common/styles';
-import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {
   SCREEN_HEIGHT,
   SCREEN_WIDTH,
@@ -24,9 +24,7 @@ import {RootStackParamList, ROOT_ROUTES} from '../../navigation/typing';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import MapView from 'react-native-maps';
 
-const statusBarHeight = getStatusBarHeight();
-
-const MapBox = styled.View`
+export const MapBox = styled.View`
   width: ${`${SCREEN_WIDTH}px`};
   height: ${`${SCREEN_HEIGHT}px`};
 `;
@@ -99,9 +97,9 @@ type NavigationProps = NativeStackScreenProps<
 
 const FindRiderLoader: React.FC<{foundRider?: Rider}> = ({foundRider}) => {
   const navigation = useNavigation<NavigationProps['navigation']>();
-  const rippleValueOne = new Animated.Value(0);
-  const rippleValueTwo = new Animated.Value(0);
-  const rippleValueThree = new Animated.Value(0);
+  const rippleValueOne = React.useRef(new Animated.Value(0)).current;
+  const rippleValueTwo = React.useRef(new Animated.Value(0)).current;
+  const rippleValueThree = React.useRef(new Animated.Value(0)).current;
   const rippleAnimation = React.useRef(
     Animated.parallel([
       Animated.loop(
