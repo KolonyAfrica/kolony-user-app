@@ -1,5 +1,5 @@
 import React from 'react';
-import {StatusBar, StyleSheet, Animated} from 'react-native';
+import {StatusBar, StyleSheet} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import styled, {useTheme} from 'styled-components/native';
@@ -18,6 +18,7 @@ import {
   VerticalWrapper,
 } from '../../components/shared/common/styles';
 import {
+  AnimatedBottomOverlay,
   Button,
   BUTTON_TYPES,
   Icon,
@@ -28,8 +29,10 @@ import {
   MARGIN_SIZES,
   Spacing,
 } from '../../components/shared';
-
-const riderBoxHeight = (270 / SCREEN_HEIGHT) * SCREEN_HEIGHT;
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamList, ROOT_ROUTES} from '../../navigation/typing';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import utils from '../../components/shared/common/utils';
 
 //dummy start and end coordinates
 const startCoords = {
@@ -69,62 +72,22 @@ const AddressArea = styled.View`
   border-radius: ${({theme}) => `${theme.borderRadii.md}px`};
 `;
 
-const RiderBox = styled(Animated.View)`
-  position: absolute;
-  z-index: 2;
-  left: 0px;
-  top: ${`${SCREEN_HEIGHT - riderBoxHeight}px`};
-  background-color: #ffffff;
-  width: ${`${SCREEN_WIDTH}px`};
-  height: ${`${riderBoxHeight}px`};
-  border-top-right-radius: ${({theme}) => `${theme.borderRadii.lg}px`};
-  border-top-left-radius: ${({theme}) => `${theme.borderRadii.lg}px`};
-  padding: 25px 24.5px;
-`;
-
 const RiderImage = styled.Image`
   width: 70px;
   height: 70px;
   border-radius: 70px;
 `;
 
+type NavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  ROOT_ROUTES.CONFIRM_RIDER
+>;
+
 const ConfirmRider = () => {
   const theme = useTheme();
-  const riderBoxAnimatedValue = React.useRef(new Animated.Value(0)).current;
-  let riderBoxTimeoutId = React.useRef<ReturnType<typeof setTimeout>>();
+  const route = useRoute<NavigationProps['route']>();
+  const navigation = useNavigation<NavigationProps['navigation']>();
   const mapRef = React.useRef<any>();
-
-  React.useEffect(
-    function AnimateRiderBox() {
-      riderBoxTimeoutId.current = setTimeout(() => {
-        Animated.spring(riderBoxAnimatedValue, {
-          toValue: 1,
-          friction: 10,
-          useNativeDriver: true,
-        }).start();
-      }, 1200);
-
-      return () => {
-        if (riderBoxTimeoutId.current) {
-          clearTimeout(riderBoxTimeoutId.current);
-        }
-      };
-    },
-    [riderBoxAnimatedValue],
-  );
-
-  const transformYValue = riderBoxAnimatedValue.interpolate({
-    inputRange: [0, 0.8, 1],
-    outputRange: [riderBoxHeight, -50, 0],
-  });
-
-  const riderBoxStyles = {
-    transform: [
-      {
-        translateY: transformYValue,
-      },
-    ],
-  };
 
   return (
     <SafeAreaView>
@@ -175,11 +138,11 @@ const ConfirmRider = () => {
             fontWeight={400}
             fontSize={theme.fontSizes.small}
             color={theme.palette.tertiary.grey320}>
-            12 Isaac John Street
+            Bamidele Adebule Maryland
           </StyledText>
         </AddressArea>
       </AddressBannerBox>
-      <RiderBox style={riderBoxStyles}>
+      <AnimatedBottomOverlay>
         <VerticalWrapper align="flex-start" justify="flex-start" fill>
           <HorizontalWrapper align="flex-start">
             <RiderImage source={require('../../assets/images/profile.jpeg')} />
@@ -236,12 +199,14 @@ const ConfirmRider = () => {
               icon={ICON_NAME.call}
               type={ICON_BUTTON_TYPE.primary}
               size={ICON_BUTTON_SIZE.medium}
+              onPress={() => utils.callNumber(route.params.rider.phoneNumber)}
             />
             <Spacing size={MARGIN_SIZES.small} />
             <IconButton
               icon={ICON_NAME.message}
               type={ICON_BUTTON_TYPE.primary}
               size={ICON_BUTTON_SIZE.medium}
+              onPress={() => navigation.navigate(ROOT_ROUTES.USER_RIDER_CHAT)}
             />
           </HorizontalWrapper>
           <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
@@ -255,7 +220,7 @@ const ConfirmRider = () => {
             </FlexItemView>
           </HorizontalWrapper>
         </VerticalWrapper>
-      </RiderBox>
+      </AnimatedBottomOverlay>
     </SafeAreaView>
   );
 };

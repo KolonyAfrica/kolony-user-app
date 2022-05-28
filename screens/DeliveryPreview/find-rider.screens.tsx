@@ -209,6 +209,7 @@ const dummyFoundRider = {
   plateNumber: 'JJC234QC',
   estTime: '6 mins',
   rating: 4.5,
+  phoneNumber: '2349067507091',
 };
 
 export interface Rider {
@@ -217,6 +218,7 @@ export interface Rider {
   plateNumber: string;
   estTime: string;
   rating: number;
+  phoneNumber: string;
 }
 
 const FindRider = () => {

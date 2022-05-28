@@ -5,7 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import AuthNavigation from './AuthNavigation';
 import MainTab from './BottomTabNavigation';
-import {MODES, OnBoarding} from '../components/shared';
+import {Chat, Feedback, MODES, OnBoarding} from '../components/shared';
 import {AppContext} from '../App';
 import {STORAGE_KEYS} from '../constants';
 import {RootStackParamList, ROOT_ROUTES} from './typing';
@@ -18,6 +18,7 @@ import PaymentSummary from '../screens/DeliveryRequest/payment-summary-screens';
 import FindRider from '../screens/DeliveryPreview/find-rider.screens';
 import CancelDeliveryReason from '../screens/DeliveryPreview/cancel-delivery-reason.screens';
 import ConfirmRider from '../screens/DeliveryPreview/confirm-rider.screens';
+import DeliveryInProgress from '../screens/DeliveryPreview/delivery-in-progress.screens';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigation = () => {
@@ -77,6 +78,17 @@ const Navigation = () => {
           <Stack.Screen
             component={ConfirmRider}
             name={ROOT_ROUTES.CONFIRM_RIDER}
+          />
+          <Stack.Screen name={ROOT_ROUTES.USER_RIDER_CHAT}>
+            {() => <Chat type="primary" />}
+          </Stack.Screen>
+          <Stack.Screen
+            component={Feedback}
+            name={ROOT_ROUTES.RIDER_FEEDBACK}
+          />
+          <Stack.Screen
+            component={DeliveryInProgress}
+            name={ROOT_ROUTES.DELIVERY_IN_PROGRESS}
           />
         </Stack.Group>
       </Stack.Navigator>
