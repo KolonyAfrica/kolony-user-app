@@ -14,11 +14,14 @@ import {
   FlexItemView,
   HorizontalWrapper,
   PushToEnd,
+  ScreenWrapper,
   StyledText,
   VerticalWrapper,
 } from '../../components/shared/common/styles';
 import {
   AnimatedBottomOverlay,
+  BottomModal,
+  BOTTOM_MODAL_SIZE,
   Button,
   BUTTON_TYPES,
   Icon,
@@ -31,7 +34,7 @@ import {
 } from '../../components/shared';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList, ROOT_ROUTES} from '../../navigation/typing';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import utils from '../../components/shared/common/utils';
 
 //dummy start and end coordinates
@@ -85,13 +88,94 @@ type NavigationProps = NativeStackScreenProps<
 
 const ConfirmRider = () => {
   const theme = useTheme();
-  const route = useRoute<NavigationProps['route']>();
   const navigation = useNavigation<NavigationProps['navigation']>();
+  const [showPromptModal, setShowPromptModal] = React.useState<
+    'call' | 'sms' | undefined
+  >();
   const mapRef = React.useRef<any>();
+
+  /** navigate to chat screen */
+  const goToChatScreen = React.useCallback(() => {
+    setShowPromptModal(undefined);
+    utils
+      .wait(400)
+      .then(() => navigation.navigate(ROOT_ROUTES.USER_RIDER_CHAT));
+  }, [navigation]);
+
+  /** prompt phone messaging app to send sms with charges */
+  const nativelySendSMSWithPhone = React.useCallback((phone: string) => {
+    return () => {
+      utils.sendMessage(phone);
+    };
+  }, []);
+
+  const nativelyCallWithPhone = React.useCallback((phone: string) => {
+    return () => {
+      utils.callNumber(phone);
+    };
+  }, []);
 
   return (
     <SafeAreaView>
       <StatusBar barStyle="dark-content" />
+      <BottomModal
+        visible={!!showPromptModal}
+        onRequestClose={() => setShowPromptModal(undefined)}
+        size={BOTTOM_MODAL_SIZE.small}>
+        {showPromptModal === 'call' ? (
+          <ScreenWrapper>
+            <VerticalWrapper fill>
+              <Spacing direction="vertical" size={MARGIN_SIZES.small} />
+              <StyledText
+                fontWeight={400}
+                fontSize={theme.fontSizes.body}
+                color={theme.palette.tertiary.grey320}>
+                Call Emmanuel?
+              </StyledText>
+              <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
+              <Button
+                type={BUTTON_TYPES.primary}
+                text="Call +2349874736445"
+                onPress={nativelyCallWithPhone('+2349874736445')}
+                fill
+              />
+              <Spacing direction="vertical" size={MARGIN_SIZES.small} />
+              <StyledText
+                fontWeight={500}
+                fontSize={theme.fontSizes.body}
+                color={theme.palette.tertiary.grey320}>
+                Call on Kolony (coming soon)
+              </StyledText>
+            </VerticalWrapper>
+          </ScreenWrapper>
+        ) : (
+          <ScreenWrapper>
+            <VerticalWrapper fill>
+              <Spacing direction="vertical" size={MARGIN_SIZES.small} />
+              <StyledText
+                fontWeight={400}
+                fontSize={theme.fontSizes.body}
+                color={theme.palette.tertiary.grey320}>
+                Chat with Emmanuel?
+              </StyledText>
+              <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
+              <Button
+                type={BUTTON_TYPES.primary}
+                text="Send SMS"
+                onPress={nativelySendSMSWithPhone('+2349793653678')}
+                fill
+              />
+              <Spacing direction="vertical" size={MARGIN_SIZES.small} />
+              <Button
+                type={BUTTON_TYPES.primaryALT}
+                text="Send Message on Kolony"
+                onPress={goToChatScreen}
+                fill
+              />
+            </VerticalWrapper>
+          </ScreenWrapper>
+        )}
+      </BottomModal>
       <MapBox>
         <MapView
           ref={mapRef}
@@ -199,14 +283,14 @@ const ConfirmRider = () => {
               icon={ICON_NAME.call}
               type={ICON_BUTTON_TYPE.primary}
               size={ICON_BUTTON_SIZE.medium}
-              onPress={() => utils.callNumber(route.params.rider.phoneNumber)}
+              onPress={() => setShowPromptModal('call')}
             />
             <Spacing size={MARGIN_SIZES.small} />
             <IconButton
               icon={ICON_NAME.message}
               type={ICON_BUTTON_TYPE.primary}
               size={ICON_BUTTON_SIZE.medium}
-              onPress={() => navigation.navigate(ROOT_ROUTES.USER_RIDER_CHAT)}
+              onPress={() => setShowPromptModal('sms')}
             />
           </HorizontalWrapper>
           <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
