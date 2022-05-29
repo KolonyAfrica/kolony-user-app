@@ -97,6 +97,7 @@ type NavigationProps = NativeStackScreenProps<
 
 const FindRiderLoader: React.FC<{foundRider?: Rider}> = ({foundRider}) => {
   const navigation = useNavigation<NavigationProps['navigation']>();
+  const route = useRoute<NavigationProps['route']>();
   const rippleValueOne = React.useRef(new Animated.Value(0)).current;
   const rippleValueTwo = React.useRef(new Animated.Value(0)).current;
   const rippleValueThree = React.useRef(new Animated.Value(0)).current;
@@ -135,12 +136,13 @@ const FindRiderLoader: React.FC<{foundRider?: Rider}> = ({foundRider}) => {
         rippleAnimation.current.stop();
         navigation.navigate(ROOT_ROUTES.CONFIRM_RIDER, {
           rider: foundRider,
+          ...route.params,
         });
       } else {
         rippleAnimation.current.start();
       }
     },
-    [foundRider, navigation],
+    [foundRider, navigation, route.params],
   );
 
   /** for the first ripple **/

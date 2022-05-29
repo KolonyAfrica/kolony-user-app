@@ -16,7 +16,6 @@ export enum ROOT_ROUTES {
   CONFIRM_RIDER = 'ConfirmRider',
   USER_RIDER_CHAT = 'UserRiderChat',
   RIDER_FEEDBACK = 'RiderFeedback',
-  DELIVERY_IN_PROGRESS = 'DeliveryInProgress',
 }
 
 /** Auth Routes */
@@ -75,8 +74,7 @@ export type RootStackParamList = {
   CancelDelivery: Pick<DeliveryRequestFormParams, 'multiple'>;
   ConfirmRider: {
     rider: Rider;
-  };
+  } & Pick<DeliveryRequestFormParams, 'multiple'>;
   UserRiderChat: undefined;
   RiderFeedback: undefined;
-  DeliveryInProgress: undefined;
 };

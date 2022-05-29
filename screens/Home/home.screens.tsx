@@ -16,6 +16,7 @@ import {
 import {
   FlexItemView,
   HorizontalWrapper,
+  ProfileImage,
   StyledScrollView,
   VerticalWrapper,
 } from '../../components/shared/common/styles';
@@ -31,7 +32,6 @@ import {
   HomeIntroBox,
   HomeWrapper,
   LastActivityBox,
-  ProfileImage,
   UserName,
   LastActivityTitle,
   LastActivityItem,

@@ -32,13 +32,6 @@ export const UserName = styled(ScreenTitle)`
 export const HomeDescText = styled(FormFooterText)`
   color: #ffffff;
 `;
-
-export const ProfileImage = styled.Image`
-  width: 50px;
-  height: 50px;
-  border-radius: 50px;
-`;
-
 export const DeliveryOptionsBox = styled.View`
   padding: ${`${generalHorizontalPadding}px`};
   background-color: #ffffff;

@@ -1,5 +1,5 @@
 import React from 'react';
-import {StatusBar, StyleSheet} from 'react-native';
+import {StatusBar, StyleSheet, TouchableOpacity} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import styled, {useTheme} from 'styled-components/native';
@@ -13,15 +13,13 @@ import {
 import {
   FlexItemView,
   HorizontalWrapper,
+  ProfileImage,
   PushToEnd,
-  ScreenWrapper,
   StyledText,
   VerticalWrapper,
 } from '../../components/shared/common/styles';
 import {
   AnimatedBottomOverlay,
-  BottomModal,
-  BOTTOM_MODAL_SIZE,
   Button,
   BUTTON_TYPES,
   Icon,
@@ -30,11 +28,14 @@ import {
   ICON_BUTTON_TYPE,
   ICON_NAME,
   MARGIN_SIZES,
+  ModalType,
   Spacing,
+  TimeoutType,
+  useCallAndSMS,
 } from '../../components/shared';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList, ROOT_ROUTES} from '../../navigation/typing';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import utils from '../../components/shared/common/utils';
 
 //dummy start and end coordinates
@@ -86,96 +87,178 @@ type NavigationProps = NativeStackScreenProps<
   ROOT_ROUTES.CONFIRM_RIDER
 >;
 
+interface DeliveryInProgressProps {
+  show: boolean;
+  riderHasArrived: boolean;
+  setPromptModal: (modal: ModalType) => void;
+}
+
+const DeliveryInProgress: React.FC<DeliveryInProgressProps> = React.memo(
+  ({show, riderHasArrived, setPromptModal}) => {
+    const theme = useTheme();
+    return (
+      <AnimatedBottomOverlay show={show}>
+        <VerticalWrapper fill align="flex-start" justify="flex-start">
+          <StyledText
+            fontWeight={700}
+            fontSize={theme.fontSizes.h2}
+            color={theme.palette.tertiary.grey320}
+            marginBottom={theme.margin.small}>
+            {riderHasArrived ? 'Rider has arrived' : 'Arriving in 2 mins'}
+          </StyledText>
+          <HorizontalWrapper>
+            <StyledText
+              fontWeight={400}
+              fontSize={theme.fontSizes.tiny}
+              color={theme.palette.tertiary.grey310}
+              marginRight={10}>
+              Qlink Motorcycle
+            </StyledText>
+            <StyledText
+              fontWeight={400}
+              fontSize={theme.fontSizes.tiny}
+              color={theme.palette.tertiary.grey320}
+              marginRight={10}>
+              UPS
+            </StyledText>
+            <StyledText
+              fontWeight={700}
+              fontSize={theme.fontSizes.small}
+              color={theme.palette.tertiary.grey320}>
+              JJC234QC
+            </StyledText>
+          </HorizontalWrapper>
+          <Spacing direction="vertical" size={MARGIN_SIZES.small} />
+          <HorizontalWrapper fill justify="space-between">
+            <VerticalWrapper>
+              <ProfileImage
+                source={require('../../assets/images/profile.jpeg')}
+              />
+              <StyledText
+                fontWeight={400}
+                fontSize={theme.fontSizes.small}
+                color={theme.palette.tertiary.grey320}>
+                Emmanuel
+              </StyledText>
+            </VerticalWrapper>
+            <VerticalWrapper>
+              <IconButton
+                icon={ICON_NAME.call}
+                type={ICON_BUTTON_TYPE.primary}
+                size={ICON_BUTTON_SIZE.medium}
+                onPress={() => setPromptModal('call')}
+              />
+              <StyledText
+                fontWeight={400}
+                fontSize={theme.fontSizes.small}
+                color={theme.palette.tertiary.grey320}>
+                Call
+              </StyledText>
+            </VerticalWrapper>
+            <VerticalWrapper>
+              <IconButton
+                icon={ICON_NAME.message}
+                type={ICON_BUTTON_TYPE.primary}
+                size={ICON_BUTTON_SIZE.medium}
+                onPress={() => setPromptModal('sms')}
+              />
+              <StyledText
+                fontWeight={400}
+                fontSize={theme.fontSizes.small}
+                color={theme.palette.tertiary.grey320}>
+                Chat
+              </StyledText>
+            </VerticalWrapper>
+          </HorizontalWrapper>
+          <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
+          <TouchableOpacity>
+            <HorizontalWrapper fill justify="space-between">
+              <HorizontalWrapper align="flex-start">
+                <Icon
+                  name={ICON_NAME.locationPointer}
+                  color={theme.palette.primary.blue}
+                  size={20}
+                />
+                <Spacing size={MARGIN_SIZES.small} />
+                <VerticalWrapper justify="flex-start" align="flex-start">
+                  <StyledText
+                    fontWeight={400}
+                    fontSize={theme.fontSizes.small}
+                    color={theme.palette.tertiary.grey320}
+                    marginTop={-3}
+                    marginBottom={theme.margin.tiny}>
+                    12 Ozumba Mbadiwe Avenue, VI
+                  </StyledText>
+                  <StyledText
+                    fontWeight={400}
+                    fontSize={theme.fontSizes.tiny}
+                    color={theme.palette.tertiary.grey310}>
+                    Track rider's movement
+                  </StyledText>
+                </VerticalWrapper>
+              </HorizontalWrapper>
+              <VerticalWrapper>
+                <Icon
+                  name={ICON_NAME.arrow}
+                  direction="right"
+                  color={theme.palette.tertiary.grey310}
+                />
+              </VerticalWrapper>
+            </HorizontalWrapper>
+          </TouchableOpacity>
+          <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
+          {!riderHasArrived ? (
+            <Button text="Cancel Delivery" type={BUTTON_TYPES.ghostError} />
+          ) : null}
+        </VerticalWrapper>
+      </AnimatedBottomOverlay>
+    );
+  },
+);
+
 const ConfirmRider = () => {
   const theme = useTheme();
   const navigation = useNavigation<NavigationProps['navigation']>();
-  const [showPromptModal, setShowPromptModal] = React.useState<
+  const route = useRoute<NavigationProps['route']>();
+  const [promptModal, setPromptModal] = React.useState<
     'call' | 'sms' | undefined
   >();
+  const [riderHasArrived, setRiderHasArrived] = React.useState<boolean>(false);
   const mapRef = React.useRef<any>();
+  const [selectedRider, setSelectedRider] = React.useState<boolean>(false);
+  const CallAndSMSModal = useCallAndSMS(
+    navigation,
+    promptModal,
+    setPromptModal,
+    '+2349067586542',
+  );
 
-  /** navigate to chat screen */
-  const goToChatScreen = React.useCallback(() => {
-    setShowPromptModal(undefined);
-    utils
-      .wait(400)
-      .then(() => navigation.navigate(ROOT_ROUTES.USER_RIDER_CHAT));
-  }, [navigation]);
-
-  /** prompt phone messaging app to send sms with charges */
-  const nativelySendSMSWithPhone = React.useCallback((phone: string) => {
+  /** simulate rider arrival */
+  React.useEffect(() => {
+    const timeoutIds: TimeoutType[] = [];
+    if (selectedRider) {
+      utils.wait(8000).then(timeoutId => {
+        setRiderHasArrived(true);
+        timeoutIds.push(timeoutId as TimeoutType);
+      });
+      utils.wait(9200).then(timeoutId => {
+        timeoutIds.push(timeoutId as TimeoutType);
+        navigation.navigate(ROOT_ROUTES.RIDER_FEEDBACK);
+      });
+    }
     return () => {
-      utils.sendMessage(phone);
+      timeoutIds.forEach(id => {
+        if (id) {
+          clearTimeout(id);
+        }
+      });
     };
-  }, []);
-
-  const nativelyCallWithPhone = React.useCallback((phone: string) => {
-    return () => {
-      utils.callNumber(phone);
-    };
-  }, []);
+  }, [navigation, selectedRider]);
 
   return (
     <SafeAreaView>
       <StatusBar barStyle="dark-content" />
-      <BottomModal
-        visible={!!showPromptModal}
-        onRequestClose={() => setShowPromptModal(undefined)}
-        size={BOTTOM_MODAL_SIZE.small}>
-        {showPromptModal === 'call' ? (
-          <ScreenWrapper>
-            <VerticalWrapper fill>
-              <Spacing direction="vertical" size={MARGIN_SIZES.small} />
-              <StyledText
-                fontWeight={400}
-                fontSize={theme.fontSizes.body}
-                color={theme.palette.tertiary.grey320}>
-                Call Emmanuel?
-              </StyledText>
-              <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
-              <Button
-                type={BUTTON_TYPES.primary}
-                text="Call +2349874736445"
-                onPress={nativelyCallWithPhone('+2349874736445')}
-                fill
-              />
-              <Spacing direction="vertical" size={MARGIN_SIZES.small} />
-              <StyledText
-                fontWeight={500}
-                fontSize={theme.fontSizes.body}
-                color={theme.palette.tertiary.grey320}>
-                Call on Kolony (coming soon)
-              </StyledText>
-            </VerticalWrapper>
-          </ScreenWrapper>
-        ) : (
-          <ScreenWrapper>
-            <VerticalWrapper fill>
-              <Spacing direction="vertical" size={MARGIN_SIZES.small} />
-              <StyledText
-                fontWeight={400}
-                fontSize={theme.fontSizes.body}
-                color={theme.palette.tertiary.grey320}>
-                Chat with Emmanuel?
-              </StyledText>
-              <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
-              <Button
-                type={BUTTON_TYPES.primary}
-                text="Send SMS"
-                onPress={nativelySendSMSWithPhone('+2349793653678')}
-                fill
-              />
-              <Spacing direction="vertical" size={MARGIN_SIZES.small} />
-              <Button
-                type={BUTTON_TYPES.primaryALT}
-                text="Send Message on Kolony"
-                onPress={goToChatScreen}
-                fill
-              />
-            </VerticalWrapper>
-          </ScreenWrapper>
-        )}
-      </BottomModal>
+      <CallAndSMSModal />
       <MapBox>
         <MapView
           ref={mapRef}
@@ -226,7 +309,12 @@ const ConfirmRider = () => {
           </StyledText>
         </AddressArea>
       </AddressBannerBox>
-      <AnimatedBottomOverlay>
+      <DeliveryInProgress
+        show={selectedRider}
+        riderHasArrived={riderHasArrived}
+        setPromptModal={setPromptModal}
+      />
+      <AnimatedBottomOverlay show={!selectedRider}>
         <VerticalWrapper align="flex-start" justify="flex-start" fill>
           <HorizontalWrapper align="flex-start">
             <RiderImage source={require('../../assets/images/profile.jpeg')} />
@@ -283,24 +371,39 @@ const ConfirmRider = () => {
               icon={ICON_NAME.call}
               type={ICON_BUTTON_TYPE.primary}
               size={ICON_BUTTON_SIZE.medium}
-              onPress={() => setShowPromptModal('call')}
+              onPress={() => setPromptModal('call')}
             />
             <Spacing size={MARGIN_SIZES.small} />
             <IconButton
               icon={ICON_NAME.message}
               type={ICON_BUTTON_TYPE.primary}
               size={ICON_BUTTON_SIZE.medium}
-              onPress={() => setShowPromptModal('sms')}
+              onPress={() => setPromptModal('sms')}
             />
           </HorizontalWrapper>
           <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
           <HorizontalWrapper>
             <FlexItemView>
-              <Button type={BUTTON_TYPES.primaryALT} text="Cancel Order" fill />
+              <Button
+                type={BUTTON_TYPES.primaryALT}
+                text="Cancel Order"
+                fill
+                onPress={() => {
+                  navigation.navigate(ROOT_ROUTES.PAYMENT_SUMMARY, {
+                    progress: 3,
+                    ...route?.params,
+                  });
+                }}
+              />
             </FlexItemView>
             <Spacing size={MARGIN_SIZES.small} />
             <FlexItemView>
-              <Button type={BUTTON_TYPES.primary} text="Select Rider" fill />
+              <Button
+                type={BUTTON_TYPES.primary}
+                text="Select Rider"
+                fill
+                onPress={() => setSelectedRider(true)}
+              />
             </FlexItemView>
           </HorizontalWrapper>
         </VerticalWrapper>
