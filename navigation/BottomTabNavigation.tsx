@@ -68,11 +68,11 @@ const MainTab = () => {
       />
       <Tab.Screen
         name={MAIN_TAB.NOTIFICATION}
-        component={Notification}
         options={{
           ...tabBarOptions(ICON_NAME.notification),
-        }}
-      />
+        }}>
+        {() => <Notification screenType="primary" />}
+      </Tab.Screen>
       <Tab.Screen
         name={MAIN_TAB.ACCOUNT}
         component={Profile}
