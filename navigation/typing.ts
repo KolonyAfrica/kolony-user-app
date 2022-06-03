@@ -16,6 +16,10 @@ export enum ROOT_ROUTES {
   CONFIRM_RIDER = 'ConfirmRider',
   USER_RIDER_CHAT = 'UserRiderChat',
   RIDER_FEEDBACK = 'RiderFeedback',
+  ACCOUNT_SETTINGS = 'AccountSettings',
+  NOTIFICATION_SETTINGS = 'NotificationSettings',
+  PAYMENT_SETTINGS = 'PaymentSettings',
+  PASSWORD_SETTINGS = 'PasswordSettings',
 }
 
 /** Auth Routes */
@@ -77,4 +81,8 @@ export type RootStackParamList = {
   } & Pick<DeliveryRequestFormParams, 'multiple'>;
   UserRiderChat: undefined;
   RiderFeedback: undefined;
+  AccountSettings: undefined;
+  PasswordSettings: undefined;
+  PaymentSettings: undefined;
+  NotificationSettings: undefined;
 };

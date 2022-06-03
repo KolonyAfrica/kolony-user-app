@@ -18,6 +18,10 @@ import PaymentSummary from '../screens/DeliveryRequest/payment-summary-screens';
 import FindRider from '../screens/DeliveryPreview/find-rider.screens';
 import CancelDeliveryReason from '../screens/DeliveryPreview/cancel-delivery-reason.screens';
 import ConfirmRider from '../screens/DeliveryPreview/confirm-rider.screens';
+import AccountSetting from '../screens/Profile/account-setting.screens';
+import NotificationSetting from '../screens/Profile/notification-setting.screens';
+import PasswordSetting from '../screens/Profile/password-setting.screens';
+import PaymentSettings from '../screens/Profile/payment-settings.screens';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigation = () => {
@@ -89,6 +93,23 @@ const Navigation = () => {
               />
             )}
           </Stack.Screen>
+          <Stack.Screen
+            component={AccountSetting}
+            name={ROOT_ROUTES.ACCOUNT_SETTINGS}
+          />
+
+          <Stack.Screen
+            component={NotificationSetting}
+            name={ROOT_ROUTES.NOTIFICATION_SETTINGS}
+          />
+          <Stack.Screen
+            component={PasswordSetting}
+            name={ROOT_ROUTES.PASSWORD_SETTINGS}
+          />
+          <Stack.Screen
+            component={PaymentSettings}
+            name={ROOT_ROUTES.PAYMENT_SETTINGS}
+          />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

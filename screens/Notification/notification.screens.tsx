@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Animated,
   Easing,
+  RefreshControl,
   ScrollView,
   StatusBar,
   TouchableWithoutFeedback,
@@ -187,16 +188,17 @@ const EmptyList = React.memo(() => {
         fontWeight={400}>
         Your notifications will appear here
       </StyledText>
+      <Spacing direction="vertical" size={MARGIN_SIZES.big} />
     </VerticalWrapper>
   );
 });
 
 const NotificationList: React.FC<NotificationListProps> = React.memo(
-  ({items, screenType}) => {
+  ({items, screenType, onRefresh}) => {
     const theme = useTheme();
-    const [notifications] = React.useState<
-      Array<Notification | NotificationDateHeader>
-    >(() => {
+    const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
+    const parsedNotifications = React.useCallback(() => {
       let allNotifications = [] as Array<Notification | NotificationDateHeader>;
       for (let section in items) {
         allNotifications = [
@@ -206,40 +208,49 @@ const NotificationList: React.FC<NotificationListProps> = React.memo(
         ];
       }
       return allNotifications;
-    });
+    }, [items]);
 
-    if (!notifications.length) {
-      return <EmptyList />;
-    }
-
+    const notifications = parsedNotifications();
+    //Todo scroll to the bottom when expanded version is cut off
     return (
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {notifications.map(notification => {
-          if ('date' in notification) {
-            return (
-              <NotificationItem
-                key={notification.id}
-                screenType={screenType}
-                {...notification}
-              />
-            );
-          } else {
-            return (
-              <HorizontalWrapper fill key={notification.id}>
-                <StyledText
-                  fontWeight={700}
-                  fontSize={theme.fontSizes.body}
-                  fontFamily={theme.fontTypes.body}
-                  color={theme.palette.tertiary.grey440}
-                  marginTop={theme.padding.medium}
-                  marginBottom={theme.padding.medium}>
-                  {utils.capitalize(notification.text)}
-                </StyledText>
-                <Spacing direction="vertical" />
-              </HorizontalWrapper>
-            );
-          }
-        })}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => onRefresh(setRefreshing)}
+          />
+        }>
+        {notifications.length ? (
+          notifications.map(notification => {
+            if ('date' in notification) {
+              return (
+                <NotificationItem
+                  key={notification.id}
+                  screenType={screenType}
+                  {...notification}
+                />
+              );
+            } else {
+              return (
+                <HorizontalWrapper fill key={notification.id}>
+                  <StyledText
+                    fontWeight={700}
+                    fontSize={theme.fontSizes.body}
+                    fontFamily={theme.fontTypes.body}
+                    color={theme.palette.tertiary.grey440}
+                    marginTop={theme.padding.medium}
+                    marginBottom={theme.padding.medium}>
+                    {utils.capitalize(notification.text)}
+                  </StyledText>
+                  <Spacing direction="vertical" />
+                </HorizontalWrapper>
+              );
+            }
+          })
+        ) : (
+          <EmptyList />
+        )}
       </ScrollView>
     );
   },
@@ -248,9 +259,22 @@ const NotificationList: React.FC<NotificationListProps> = React.memo(
 const NotificationScreen: React.FC<{screenType: sharedType}> = ({
   screenType,
 }) => {
-  const [notifications] = React.useState<NotificationItemsType>(
-    () => notificationItems,
+  const [notifications, setNotifications] = React.useState<
+    NotificationItemsType | {}
+  >({});
+
+  const onRefresh = React.useCallback(
+    (setRefreshing: React.Dispatch<React.SetStateAction<boolean>>) => {
+      //Todo remove setTimeout with actual fetch logic
+      setRefreshing(true);
+      utils.wait(3000).then(() => {
+        setNotifications(notificationItems);
+        setRefreshing(false);
+      });
+    },
+    [],
   );
+
   return (
     <ScreenWrapper>
       <StatusBar barStyle="dark-content" />
@@ -261,7 +285,11 @@ const NotificationScreen: React.FC<{screenType: sharedType}> = ({
           mode="primary"
         />
         <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
-        <NotificationList items={notifications} screenType={screenType} />
+        <NotificationList
+          items={notifications}
+          screenType={screenType}
+          onRefresh={onRefresh}
+        />
       </SafeAreaView>
     </ScreenWrapper>
   );

@@ -14,6 +14,9 @@ export type NotificationItemsType = {
 export interface NotificationListProps {
   items: NotificationItemsType;
   screenType: sharedType;
+  onRefresh: (
+    setRefreshing: React.Dispatch<React.SetStateAction<boolean>>,
+  ) => void;
 }
 
 export type NotificationDateHeader = {
