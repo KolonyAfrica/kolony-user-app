@@ -9,6 +9,7 @@ import {
   ICON_NAME,
   MARGIN_SIZES,
   Spacing,
+  TimeoutType,
 } from '../../components/shared';
 import {
   statusBarHeight,
@@ -228,7 +229,7 @@ const FindRider = () => {
   const navigation = useNavigation<NavigationProps['navigation']>();
   const route = useRoute<NavigationProps['route']>();
   const [foundRider, setFoundRider] = React.useState<Rider | undefined>();
-  let timeoutId = React.useRef<ReturnType<typeof setTimeout>>();
+  let timeoutId = React.useRef<TimeoutType>();
 
   const findRider = () => {
     timeoutId.current = setTimeout(() => {
@@ -243,6 +244,13 @@ const FindRider = () => {
   };
 
   React.useEffect(findRider, []);
+
+  const handleCancelDelivery = React.useCallback(() => {
+    timeoutId.current && clearTimeout(timeoutId.current);
+    navigation.navigate(ROOT_ROUTES.CANCEL_DELIVERY, {
+      ...route.params,
+    });
+  }, [navigation, route.params]);
 
   return (
     <SafeAreaView>
@@ -290,11 +298,7 @@ const FindRider = () => {
           type={BUTTON_TYPES.error}
           text="Cancel Request"
           fill
-          onPress={() =>
-            navigation.navigate(ROOT_ROUTES.CANCEL_DELIVERY, {
-              ...route.params,
-            })
-          }
+          onPress={handleCancelDelivery}
           leftIcon={({textColor}) => (
             <Icon
               key="cancel-request"

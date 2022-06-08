@@ -208,7 +208,11 @@ const DeliveryInProgress: React.FC<DeliveryInProgressProps> = React.memo(
           </TouchableOpacity>
           <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
           {!riderHasArrived ? (
-            <Button text="Cancel Delivery" type={BUTTON_TYPES.ghostError} />
+            <Button
+              text="Cancel Delivery"
+              type={BUTTON_TYPES.ghostError}
+              fill
+            />
           ) : null}
         </VerticalWrapper>
       </AnimatedBottomOverlay>

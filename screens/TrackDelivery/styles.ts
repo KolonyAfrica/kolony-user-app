@@ -2,7 +2,14 @@
 
 import {StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
+import {
+  SCREEN_WIDTH,
+  SCREEN_HEIGHT,
+} from '../../components/shared/common/constants';
+import {generalHorizontalPadding} from '../../components/shared/common/styles';
 import {MAP_HEIGHT} from './track-delivery.screens';
+
+const bottomBoxHeight = (147 / SCREEN_HEIGHT) * SCREEN_HEIGHT;
 
 export const MapViewBox = styled.View`
   width: 100%;
@@ -34,4 +41,14 @@ export const HistoryDot = styled.View`
   height: 14px;
   border-radius: ${({theme}) => `${theme.borderRadii.lg}px`};
   background-color: ${({theme}) => theme.palette.secondary.orange};
+`;
+export const RiderInfoBox = styled.View`
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: ${`${SCREEN_HEIGHT - bottomBoxHeight}px`};
+  width: ${`${SCREEN_WIDTH}px`};
+  height: ${`${bottomBoxHeight}px`};
+  padding: ${({theme}) =>
+    `${theme.padding.medium}px ${generalHorizontalPadding}px`};
 `;

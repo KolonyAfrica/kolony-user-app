@@ -4,20 +4,29 @@ import MapView, {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
+  BottomModal,
+  BOTTOM_MODAL_SIZE,
   Button,
   BUTTON_SIZE,
   BUTTON_TYPES,
+  CenteredModal,
   Icon,
+  IconButton,
+  ICON_BUTTON_SIZE,
+  ICON_BUTTON_TYPE,
   ICON_NAME,
   MARGIN_SIZES,
   Spacing,
   TimeoutType,
+  useCallAndSMS,
 } from '../../components/shared';
 import CenteredHeaderTitle from '../../components/shared/CenteredHeaderTitle';
 import {GOOGLE_MAPS_API_KEY} from '@env';
 import {
+  boxShadowStyles,
   FlexItemView,
   HorizontalWrapper,
+  ProfileImage,
   ScreenWrapper,
   StyledScrollView,
   StyledText,
@@ -29,6 +38,7 @@ import {
   HistoryProgressLineBox,
   HistoryStack,
   MapViewBox,
+  RiderInfoBox,
 } from './styles';
 import {
   SCREEN_HEIGHT,
@@ -37,6 +47,10 @@ import {
 import {useTheme} from 'styled-components/native';
 import {history as defaultHistory} from './data';
 import utils from '../../components/shared/common/utils';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamList, ROOT_ROUTES} from '../../navigation/typing';
+import ChangeReceiverModal from './modals/change-receiver.modals';
 
 export const MAP_HEIGHT = (228 / SCREEN_HEIGHT) * SCREEN_HEIGHT;
 const MAP_WIDTH_PADDING = (SCREEN_WIDTH - 48) / 20;
@@ -53,9 +67,30 @@ const endCoords = {
   longitude: 3.3780085,
 };
 
+type TrackDeliveryNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  ROOT_ROUTES.TRACK_DELIVERY
+>;
+
 const TrackDelivery = () => {
   const mapRef = React.useRef<any>();
   const [history, setHistory] = React.useState(defaultHistory);
+  const navigation =
+    useNavigation<TrackDeliveryNavigationProps['navigation']>();
+  const [promptModal, setPromptModal] = React.useState<
+    'call' | 'sms' | undefined
+  >();
+  const [successDelegationModal, setSuccessModalVisibility] =
+    React.useState<boolean>(false);
+  const [showDelegateModal, setShowDelegateModal] =
+    React.useState<boolean>(false);
+  const CallAndSMSModal = useCallAndSMS(
+    navigation,
+    promptModal,
+    setPromptModal,
+    '+2349067586542',
+  );
+
   const theme = useTheme();
 
   const simulateTimeFastForwards = React.useCallback(async () => {
@@ -87,6 +122,104 @@ const TrackDelivery = () => {
   return (
     <ScreenWrapper>
       <StatusBar barStyle="dark-content" />
+      <CallAndSMSModal />
+      <CenteredModal
+        visible={successDelegationModal}
+        onRequestClose={() => setSuccessModalVisibility(false)}
+        content={{
+          title: 'Nice one!',
+          msg: 'You have delegated your delivery to Emmanuel (0703226631) with Tracking ID 211050',
+          btnActionName: 'Done',
+        }}
+      />
+      <BottomModal
+        visible={showDelegateModal}
+        onRequestClose={() => setShowDelegateModal(false)}
+        size={BOTTOM_MODAL_SIZE.medium}>
+        <ChangeReceiverModal
+          onRequestClose={() => setShowDelegateModal(false)}
+          onConfirm={() => {
+            setShowDelegateModal(false);
+            setSuccessModalVisibility(true);
+          }}
+        />
+      </BottomModal>
+      <RiderInfoBox style={boxShadowStyles}>
+        <HorizontalWrapper>
+          <StyledText
+            color={theme.palette.tertiary.grey320}
+            fontSize={theme.fontSizes.small}
+            fontWeight={700}
+            marginRight={14}>
+            Emmanuel
+          </StyledText>
+          <StyledText
+            color={theme.palette.tertiary.grey310}
+            fontSize={theme.fontSizes.tiny}
+            fontWeight={400}
+            marginRight={14}>
+            Qlink Motorcycle
+          </StyledText>
+          <StyledText
+            color={theme.palette.tertiary.grey320}
+            fontSize={theme.fontSizes.small}
+            fontWeight={700}>
+            JJC234QC
+          </StyledText>
+        </HorizontalWrapper>
+        <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
+        <HorizontalWrapper justify="space-between">
+          <VerticalWrapper>
+            <ProfileImage
+              source={require('../../assets/images/profile.jpeg')}
+            />
+            <HorizontalWrapper marginTop={4}>
+              <Icon
+                name={ICON_NAME.star}
+                size={18}
+                color={theme.palette.primary.blue}
+              />
+              <StyledText
+                color={theme.palette.tertiary.grey320}
+                fontSize={theme.fontSizes.small}
+                marginLeft={5.5}
+                fontWeight={400}>
+                4.5
+              </StyledText>
+            </HorizontalWrapper>
+          </VerticalWrapper>
+          <VerticalWrapper>
+            <IconButton
+              icon={ICON_NAME.call}
+              type={ICON_BUTTON_TYPE.primary}
+              size={ICON_BUTTON_SIZE.medium}
+              onPress={() => setPromptModal('call')}
+            />
+            <StyledText
+              color={theme.palette.tertiary.grey320}
+              fontSize={theme.fontSizes.tiny}
+              fontWeight={400}
+              marginTop={4}>
+              Call
+            </StyledText>
+          </VerticalWrapper>
+          <VerticalWrapper>
+            <IconButton
+              icon={ICON_NAME.message}
+              type={ICON_BUTTON_TYPE.primary}
+              size={ICON_BUTTON_SIZE.medium}
+              onPress={() => setPromptModal('sms')}
+            />
+            <StyledText
+              color={theme.palette.tertiary.grey320}
+              fontSize={theme.fontSizes.tiny}
+              fontWeight={400}
+              marginTop={4}>
+              Chat
+            </StyledText>
+          </VerticalWrapper>
+        </HorizontalWrapper>
+      </RiderInfoBox>
       <SafeAreaView>
         <CenteredHeaderTitle
           title="Track Delivery"
@@ -94,8 +227,9 @@ const TrackDelivery = () => {
           mode="primary"
           moveTitleLeftBy={20}
         />
+
         <StyledScrollView showsVerticalScrollIndicator={false}>
-          <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
+          <Spacing direction="vertical" size={MARGIN_SIZES.small} />
           <MapViewBox>
             <MapView
               ref={mapRef}
@@ -220,7 +354,7 @@ const TrackDelivery = () => {
               Uniport Road, Owhipa Chopa, Choba, Port Harcourt, Rivers.
             </StyledText>
           </HorizontalWrapper>
-          <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
+          <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
           <HorizontalWrapper fill>
             <FlexItemView>
               <Button
@@ -235,12 +369,15 @@ const TrackDelivery = () => {
               <Button
                 size={BUTTON_SIZE.medium}
                 type={BUTTON_TYPES.primary}
+                onPress={() => setShowDelegateModal(true)}
                 text="Change Receiver"
                 fill
               />
             </FlexItemView>
           </HorizontalWrapper>
-          <Spacing direction="vertical" size={MARGIN_SIZES.small} />
+          <Spacing direction="vertical" size={MARGIN_SIZES.large} />
+          <Spacing direction="vertical" size={MARGIN_SIZES.large} />
+          <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
         </StyledScrollView>
       </SafeAreaView>
     </ScreenWrapper>
