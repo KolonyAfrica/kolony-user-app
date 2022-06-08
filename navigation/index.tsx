@@ -22,6 +22,8 @@ import AccountSetting from '../screens/Profile/account-setting.screens';
 import NotificationSetting from '../screens/Profile/notification-setting.screens';
 import PasswordSetting from '../screens/Profile/password-setting.screens';
 import PaymentSettings from '../screens/Profile/payment-settings.screens';
+import OrderDetails from '../screens/Orders/order-details.screens';
+import TrackDelivery from '../screens/TrackDelivery/track-delivery.screens';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigation = () => {
@@ -109,6 +111,14 @@ const Navigation = () => {
           <Stack.Screen
             component={PaymentSettings}
             name={ROOT_ROUTES.PAYMENT_SETTINGS}
+          />
+          <Stack.Screen
+            component={OrderDetails}
+            name={ROOT_ROUTES.ORDER_DETAILS}
+          />
+          <Stack.Screen
+            component={TrackDelivery}
+            name={ROOT_ROUTES.TRACK_DELIVERY}
           />
         </Stack.Group>
       </Stack.Navigator>

@@ -42,7 +42,7 @@ const PaymentSettings = () => {
         content={{
           title: 'Well done!',
           msg: 'You have added card ****4081 to your account',
-          btnActionName: 'Add Card',
+          btnActionName: 'Go Back',
         }}
       />
       <Paystack

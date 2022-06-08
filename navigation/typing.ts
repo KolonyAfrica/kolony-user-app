@@ -20,6 +20,8 @@ export enum ROOT_ROUTES {
   NOTIFICATION_SETTINGS = 'NotificationSettings',
   PAYMENT_SETTINGS = 'PaymentSettings',
   PASSWORD_SETTINGS = 'PasswordSettings',
+  ORDER_DETAILS = 'OrderDetails',
+  TRACK_DELIVERY = 'TrackDelivery',
 }
 
 /** Auth Routes */
@@ -85,4 +87,6 @@ export type RootStackParamList = {
   PasswordSettings: undefined;
   PaymentSettings: undefined;
   NotificationSettings: undefined;
+  OrderDetails: undefined;
+  TrackDelivery: undefined;
 };

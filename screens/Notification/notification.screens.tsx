@@ -189,6 +189,9 @@ const EmptyList = React.memo(() => {
         Your notifications will appear here
       </StyledText>
       <Spacing direction="vertical" size={MARGIN_SIZES.big} />
+      <Spacing direction="vertical" size={MARGIN_SIZES.big} />
+      <Spacing direction="vertical" size={MARGIN_SIZES.big} />
+      <Spacing direction="vertical" size={MARGIN_SIZES.big} />
     </VerticalWrapper>
   );
 });

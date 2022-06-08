@@ -1,3 +1,6 @@
+import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
+import {CompositeScreenProps, useNavigation} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {FlatList, StatusBar} from 'react-native';
 import {useTheme} from 'styled-components';
@@ -21,6 +24,11 @@ import {
   VerticalWrapper,
 } from '../../components/shared/common/styles';
 import Spacing from '../../components/shared/Spacing';
+import {
+  MainTabStackParamList,
+  RootStackParamList,
+  ROOT_ROUTES,
+} from '../../navigation/typing';
 import VehicleTypesModal from './components/modals/vehicle-types.modal';
 import {recentActivities} from './data';
 import {
@@ -42,8 +50,14 @@ import {
 
 export type DeliveryType = 'multiple' | 'single' | undefined;
 
+type HomeNavigationProps = CompositeScreenProps<
+  BottomTabScreenProps<MainTabStackParamList, 'Home'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
 const Home = () => {
   const theme = useTheme();
+  const navigation = useNavigation<HomeNavigationProps['navigation']>();
   const [showVehicleTypesModal, setShowVehicleTypesModal] =
     React.useState<boolean>(false);
   const [chosenDeliveryType, setChosenDeliveryType] =
@@ -140,7 +154,9 @@ const Home = () => {
               />
             </HorizontalWrapper>
           </DeliveryOption>
-          <DeliveryOption reduceMargin>
+          <DeliveryOption
+            reduceMargin
+            onPress={() => navigation.navigate(ROOT_ROUTES.TRACK_DELIVERY)}>
             <HorizontalWrapper justify="space-between">
               <HorizontalWrapper>
                 <Icon name={ICON_NAME.tracking} />
