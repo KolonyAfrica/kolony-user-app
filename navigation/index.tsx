@@ -24,6 +24,7 @@ import PasswordSetting from '../screens/Profile/password-setting.screens';
 import PaymentSettings from '../screens/Profile/payment-settings.screens';
 import OrderDetails from '../screens/Orders/order-details.screens';
 import TrackDelivery from '../screens/TrackDelivery/track-delivery.screens';
+import SetLandMark from '../screens/LandMark/set-landmark.screens';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigation = () => {
@@ -119,6 +120,10 @@ const Navigation = () => {
           <Stack.Screen
             component={TrackDelivery}
             name={ROOT_ROUTES.TRACK_DELIVERY}
+          />
+          <Stack.Screen
+            component={SetLandMark}
+            name={ROOT_ROUTES.SET_LANDMARK}
           />
         </Stack.Group>
       </Stack.Navigator>

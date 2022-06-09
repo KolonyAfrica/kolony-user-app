@@ -1,0 +1,62 @@
+export const suggestedAddresses = [
+  {
+    business_status: 'OPERATIONAL',
+    formatted_address: '35B Opebi Rd, Opebi 101233, Ikeja, Nigeria',
+    geometry: {
+      location: {lat: 6.558660199999999, lng: 3.3498575},
+      viewport: {lat: 6.558660199999999, lng: 3.3498575},
+    },
+    icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png',
+    icon_background_color: '#7B9EB0',
+    icon_mask_base_uri:
+      'https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet',
+    name: 'Y-ray Models',
+    opening_hours: {open_now: false},
+    photos: [[Object]],
+    place_id: 'ChIJjWTngDL1OxARRQ9b9vdfj7E',
+    plus_code: {compound_code: 'H9R5+FQ Ikeja', global_code: '6FR5H9R5+FQ'},
+    rating: 4.1,
+    reference: 'ChIJjWTngDL1OxARRQ9b9vdfj7E',
+    types: ['point_of_interest', 'establishment'],
+    user_ratings_total: 51,
+  },
+  {
+    business_status: 'OPERATIONAL',
+    formatted_address: '14 Oko-Oba Rd, Agege 102212, Lagos, Nigeria',
+    geometry: {
+      location: {lat: 6.558660199999999, lng: 3.3498575},
+      viewport: {lat: 6.558660199999999, lng: 3.3498575},
+    },
+    icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png',
+    icon_background_color: '#7B9EB0',
+    icon_mask_base_uri:
+      'https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet',
+    name: 'Y. Yemmes Barbing Salon',
+    photos: [[Object]],
+    place_id: 'ChIJNWlV55KROxARiA8H8TdT19I',
+    plus_code: {compound_code: 'J8M6+CJ Lagos', global_code: '6FR5J8M6+CJ'},
+    rating: 0,
+    reference: 'ChIJNWlV55KROxARiA8H8TdT19I',
+    types: ['hair_care', 'health', 'point_of_interest', 'establishment'],
+    user_ratings_total: 0,
+  },
+  {
+    business_status: 'OPERATIONAL',
+    formatted_address: '2 Yetunde Brown St, Ifako 105102, Lagos, Nigeria',
+    geometry: {
+      location: {lat: 6.558660199999999, lng: 3.3498575},
+      viewport: {lat: 6.558660199999999, lng: 3.3498575},
+    },
+    icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png',
+    icon_background_color: '#7B9EB0',
+    icon_mask_base_uri:
+      'https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet',
+    name: "Y Del's Toućh",
+    place_id: 'ChIJq2lZCmONOxARB2ib_EoqlSk',
+    plus_code: {compound_code: 'H97R+6M Lagos', global_code: '6FR5H97R+6M'},
+    rating: 0,
+    reference: 'ChIJq2lZCmONOxARB2ib_EoqlSk',
+    types: ['point_of_interest', 'establishment'],
+    user_ratings_total: 0,
+  },
+];

@@ -360,6 +360,7 @@ const TrackDelivery = () => {
               <Button
                 size={BUTTON_SIZE.medium}
                 type={BUTTON_TYPES.text}
+                onPress={() => navigation.navigate(ROOT_ROUTES.SET_LANDMARK)}
                 text="Set Landmark"
                 fill
               />

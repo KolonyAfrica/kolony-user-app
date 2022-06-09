@@ -22,6 +22,7 @@ export enum ROOT_ROUTES {
   PASSWORD_SETTINGS = 'PasswordSettings',
   ORDER_DETAILS = 'OrderDetails',
   TRACK_DELIVERY = 'TrackDelivery',
+  SET_LANDMARK = 'SetLandmark',
 }
 
 /** Auth Routes */
@@ -89,4 +90,5 @@ export type RootStackParamList = {
   NotificationSettings: undefined;
   OrderDetails: undefined;
   TrackDelivery: undefined;
+  SetLandmark: undefined;
 };
