@@ -64,8 +64,8 @@ const startCoords = {
 };
 
 const endCoords = {
-  latitude: 6.5664441,
-  longitude: 3.3780085,
+  latitude: 6.5767095,
+  longitude: 3.3631251,
 };
 
 type TrackDeliveryNavigationProps = NativeStackScreenProps<

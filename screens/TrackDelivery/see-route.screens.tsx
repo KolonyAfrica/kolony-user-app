@@ -33,18 +33,18 @@ const startCoords = {
 
 const landmarkCoords = [
   {
-    latitude: 6.3517168,
-    longitude: 4.020489,
+    latitude: 6.5655738,
+    longitude: 3.3649219,
   },
   {
-    latitude: 6.4766299,
-    longitude: 3.8615826,
+    latitude: 6.5184178,
+    longitude: 3.3705019,
   },
 ];
 
 const endCoords = {
-  latitude: 6.5664441,
-  longitude: 3.3780085,
+  latitude: 6.5767095,
+  longitude: 3.3631251,
 };
 
 const MapViewBox = styled.View`
@@ -65,7 +65,7 @@ const SeeRoute = () => {
             title="See Route"
             addBackText={false}
             mode="primary"
-            moveTitleLeftBy={generalHorizontalPadding}
+            moveTitleLeftBy={generalHorizontalPadding + 20}
           />
         </HorizontalWrapper>
         <MapViewBox>
