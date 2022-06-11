@@ -25,6 +25,7 @@ import PaymentSettings from '../screens/Profile/payment-settings.screens';
 import OrderDetails from '../screens/Orders/order-details.screens';
 import TrackDelivery from '../screens/TrackDelivery/track-delivery.screens';
 import SetLandMark from '../screens/LandMark/set-landmark.screens';
+import SeeRoute from '../screens/TrackDelivery/see-route.screens';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigation = () => {
@@ -125,6 +126,7 @@ const Navigation = () => {
             component={SetLandMark}
             name={ROOT_ROUTES.SET_LANDMARK}
           />
+          <Stack.Screen component={SeeRoute} name={ROOT_ROUTES.SEE_ROUTE} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

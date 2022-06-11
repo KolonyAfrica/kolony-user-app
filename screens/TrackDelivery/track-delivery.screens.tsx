@@ -38,6 +38,7 @@ import {
   HistoryProgressLineBox,
   HistoryStack,
   MapViewBox,
+  MapViewOverlay,
   RiderInfoBox,
 } from './styles';
 import {
@@ -231,6 +232,9 @@ const TrackDelivery = () => {
         <StyledScrollView showsVerticalScrollIndicator={false}>
           <Spacing direction="vertical" size={MARGIN_SIZES.small} />
           <MapViewBox>
+            <MapViewOverlay
+              onPress={() => navigation.navigate(ROOT_ROUTES.SEE_ROUTE)}
+            />
             <MapView
               ref={mapRef}
               style={StyleSheet.absoluteFillObject}

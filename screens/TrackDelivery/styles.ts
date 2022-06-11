@@ -16,6 +16,18 @@ export const MapViewBox = styled.View`
   height: ${`${MAP_HEIGHT}px`};
   border-radius: ${({theme}) => `${theme.borderRadii.lg}px`};
   overflow: hidden;
+  position: relative;
+`;
+export const MapViewOverlay = styled.TouchableOpacity`
+  width: 100%;
+  height: ${`${MAP_HEIGHT}px`};
+  border-radius: ${({theme}) => `${theme.borderRadii.lg}px`};
+  overflow: hidden;
+  background-color: #00000040;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
 `;
 
 export const HistoryStack = styled.View`
