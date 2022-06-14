@@ -1,6 +1,6 @@
+import {TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import {SCREEN_WIDTH} from '../../../../components/shared/common/constants';
-import {Touchable} from '../../../../components/shared/common/styles';
 
 /** Layout styles */
 export const VehicleTypeModalBox = styled.View`
@@ -16,7 +16,7 @@ export const VehicleOptionModal = styled.View`
   margin-bottom: ${({theme}) => `${theme.margin.medium}px`};
 `;
 
-export const CloseIconBox = styled(Touchable)`
+export const CloseIconBox = styled(TouchableOpacity)`
   padding-right: 12px;
 `;
 
