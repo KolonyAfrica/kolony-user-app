@@ -22,7 +22,7 @@ export const HomeIntroBox = styled.View`
     theme: {
       padding: {big, large},
     },
-  }) => `${large * 2.5}px ${big}px ${big}px ${big}px`};
+  }) => `${large * 1.5}px ${big}px ${big}px ${big}px`};
 `;
 
 export const UserName = styled(ScreenTitle)`

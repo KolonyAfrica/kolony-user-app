@@ -2,6 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {StatusBar} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTheme} from 'styled-components/native';
 import {
@@ -52,6 +53,7 @@ const OrderDetails = () => {
   );
 
   return (
+    <KeyboardAwareScrollView>
     <ScreenWrapper>
       <StatusBar barStyle="dark-content" />
       <CallAndSMSModal />
@@ -275,6 +277,7 @@ const OrderDetails = () => {
         </StyledScrollView>
       </SafeAreaView>
     </ScreenWrapper>
+    </KeyboardAwareScrollView>
   );
 };
 

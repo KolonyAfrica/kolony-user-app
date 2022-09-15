@@ -1,5 +1,5 @@
 import React from 'react';
-import {StatusBar} from 'react-native';
+import {KeyboardAvoidingView, StatusBar} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {useTheme} from 'styled-components/native';
 import {
@@ -72,6 +72,7 @@ const AccountSetting = () => {
         </AccountSettingHeader>
         <AccountSettingBody>
           <Spacing direction="vertical" size={MARGIN_SIZES.small2} />
+          <KeyboardAvoidingView>
           <BaseTextInput
             label="Full Name"
             placeholder="Ibikunle Shuaib"
@@ -121,6 +122,7 @@ const AccountSetting = () => {
             editable={isEditing}
             fill
           />
+          </KeyboardAvoidingView>
           <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
           <Button
             text={isEditing ? 'Update Profile' : 'Edit Profile'}

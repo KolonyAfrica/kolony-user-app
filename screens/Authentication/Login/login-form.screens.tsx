@@ -20,6 +20,7 @@ import {
   ScreenTitle,
   ScreenWrapper,
 } from '../../../components/shared/common/styles';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import GoBack from '../../../components/shared/GoBack';
 import Spacing from '../../../components/shared/Spacing';
 import {
@@ -45,6 +46,7 @@ const Login = () => {
   );
 
   return (
+    <KeyboardAwareScrollView>
     <ScreenWrapper>
       <SafeAreaView>
         <GoBack />
@@ -126,6 +128,7 @@ const Login = () => {
         </HorizontalWrapper>
       </SafeAreaView>
     </ScreenWrapper>
+    </KeyboardAwareScrollView>
   );
 };
 

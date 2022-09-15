@@ -5,8 +5,11 @@ import {
   Linking,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Platform
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import {
   BaseTextInput,
   Button,
@@ -23,6 +26,7 @@ import {
   Link,
   ScreenTitle,
   ScreenWrapper,
+  StyledScrollView,
   VerticalWrapper,
 } from '../../../components/shared/common/styles';
 import GoBack from '../../../components/shared/GoBack';
@@ -53,12 +57,19 @@ const SignUpForm = () => {
   }, []);
 
   return (
+    <KeyboardAwareScrollView>
     <ScreenWrapper>
       <SafeAreaView>
         <GoBack />
+        
         <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
         <ScreenTitle>Create an Account</ScreenTitle>
         <Spacing direction="vertical" size={MARGIN_SIZES.medium} />
+        {/* <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      
+      style={{marginBottom:40}}
+    > */}
         <BaseTextInput
           label="First Name"
           placeholder="Shuaib"
@@ -120,6 +131,7 @@ const SignUpForm = () => {
           }
           fill
         />
+      {/* </KeyboardAvoidingView> */}
         <Spacing direction="vertical" size={MARGIN_SIZES.small} />
         <VerticalWrapper>
           <SignUpFormFooterText>
@@ -152,8 +164,10 @@ const SignUpForm = () => {
             </TouchableOpacity>
           </HorizontalWrapper>
         </VerticalWrapper>
+      
       </SafeAreaView>
     </ScreenWrapper>
+    </KeyboardAwareScrollView>
   );
 };
 

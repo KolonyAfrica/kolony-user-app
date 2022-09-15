@@ -52,6 +52,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList, ROOT_ROUTES} from '../../navigation/typing';
 import ChangeReceiverModal from './modals/change-receiver.modals';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export const MAP_HEIGHT = (228 / SCREEN_HEIGHT) * SCREEN_HEIGHT;
 const MAP_WIDTH_PADDING = (SCREEN_WIDTH - 48) / 20;
@@ -121,6 +122,7 @@ const TrackDelivery = () => {
   }, []);
 
   return (
+    <KeyboardAwareScrollView>
     <ScreenWrapper>
       <StatusBar barStyle="dark-content" />
       <CallAndSMSModal />
@@ -386,6 +388,7 @@ const TrackDelivery = () => {
         </StyledScrollView>
       </SafeAreaView>
     </ScreenWrapper>
+    </KeyboardAwareScrollView>
   );
 };
 

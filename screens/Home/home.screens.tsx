@@ -3,6 +3,7 @@ import {CompositeScreenProps, useNavigation} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {FlatList, StatusBar} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {useTheme} from 'styled-components';
 import {
   BaseTextInput,
@@ -74,6 +75,7 @@ const Home = () => {
   }, []);
 
   return (
+    <KeyboardAwareScrollView>
     <HomeWrapper>
       <StatusBar barStyle="light-content" />
       <BottomModal
@@ -213,6 +215,7 @@ const Home = () => {
         </LastActivityBox>
       </StyledScrollView>
     </HomeWrapper>
+    </KeyboardAwareScrollView>
   );
 };
 
